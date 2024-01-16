@@ -5,8 +5,6 @@
 ### 2024/01
 **16 :**
 [이클립스와 깃 연동 시 참고한 티스토리](https://mollangpiu.tistory.com/309)   
-*Bugfix*   
+*Problem*   
 브랜치 이름이 master일 경우 머지가 되지 않는다. (추정)   
-git 
-이클립스와 git을 연동하는 데 성공했지만, pull 작업을 먼저 거치지 않았던 탓일까.   
-나는 첫 README.md를 잃었다.
+모든 것이 힘겹다...   
