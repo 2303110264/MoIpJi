@@ -12,6 +12,7 @@ public class WeatherVO {
     private double VVV;
     private double VEC;
     private double WSD;
+    
 	public int getLocationCode() {
 		return locationCode;
 	}
