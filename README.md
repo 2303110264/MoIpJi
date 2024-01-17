@@ -10,3 +10,16 @@
 *Problem*   
 브랜치 이름이 master일 경우 머지가 되지 않는다. (추정)   
 모든 것이 힘겹다...   
+   
+<hr>   
+   
+**17 :**   
+git remote   
+add name link : new repo add   
+   
+*if one name, two repo = upload one time two repo*   
+> git remote set-url name --push --add link.git   
+*remove*   
+> git remote set-url name --push --delete link.git   
+   
+
