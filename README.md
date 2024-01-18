@@ -21,5 +21,10 @@ add name link : new repo add
 > git remote set-url name --push --add link.git   
 *remove*   
 > git remote set-url name --push --delete link.git   
-   
 
+
+**18 :**   
+초단기 실황/예보, 단기 예보 VO 생성   
+*xml parsing*   
+> String으로 받아온 request 값을 Document 형식으로 변환, NodeList return 완료
+> 내일은 각 값을 VO에 대입해서 현재 날씨를 출력해볼 예정
