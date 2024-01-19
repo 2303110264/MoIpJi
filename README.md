@@ -33,3 +33,5 @@ add name link : new repo add
 **19 :**   
 xml parse를 할 때, childNode의 childNode를 찾기 위해 추가 작업을 더 해주어야 한다.   
 나는 xml값이 날아오는데 VO에 들어가지는 않는 이유를 찾느라 오늘 하루를 다 날렸다.  
+
+
