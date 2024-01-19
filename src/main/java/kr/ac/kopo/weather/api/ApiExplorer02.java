@@ -46,8 +46,9 @@ public class ApiExplorer02 implements IApi{
         }
         }
 
+
 	@Override
-	public String api() {
+	public String api(String date, String time, String nx, String ny) {
 		// TODO Auto-generated method stub
 		return null;
 	}
