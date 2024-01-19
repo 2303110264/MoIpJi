@@ -28,3 +28,10 @@ add name link : new repo add
 *xml parsing*   
 > String으로 받아온 request 값을 Document 형식으로 변환, NodeList return 완료
 > 내일은 각 값을 VO에 대입해서 현재 날씨를 출력해볼 예정
+   
+   
+**19 :**   
+xml parse를 할 때, childNode의 childNode를 찾기 위해 추가 작업을 더 해주어야 한다.   
+나는 xml값이 날아오는데 VO에 들어가지는 않는 이유를 찾느라 오늘 하루를 다 날렸다.  
+
+
