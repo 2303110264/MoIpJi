@@ -3,6 +3,10 @@ package kr.ac.kopo.weather.vo;
 
 public class UltraSrtFNcstVO {
 	
+	private String baseDate;
+	private String baseTime;
+	private String local;
+	
 	//(초단기) 없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7)
     private String PTY; // 강수형태 (코드값)
 
@@ -65,11 +69,21 @@ public class UltraSrtFNcstVO {
 	}
 	@Override
 	public String toString() {
-		return "UltraSrtFNcstVO [PTY=" + PTY + ", RN1=" + RN1 + ", T1H=" + T1H + ", REH=" + REH + ", WSD=" + WSD
-				+ ", LGT=" + LGT + ", SKY=" + SKY + "]";
+		return "UltraSrtFNcstVO [baseDate=" + baseDate + ", baseTime=" + baseTime + ", local=" + local + ", PTY=" + PTY
+				+ ", RN1=" + RN1 + ", T1H=" + T1H + ", REH=" + REH + ", WSD=" + WSD + ", LGT=" + LGT + ", SKY=" + SKY
+				+ "]";
 	}
-	public UltraSrtFNcstVO(String pTY, String rN1, String t1h, String rEH, String wSD, String lGT, String sKY) {
+	public String print() {
+		return "지역: "+local+"\n강수형태: "+PTY+"\n강수량: "+RN1+
+				"\n기온: "+T1H+"\n습도: "+REH+"\n풍속: "+WSD+
+				"\n번개: "+LGT+"\n하늘 상태: "+SKY+"\n";
+	}
+	public UltraSrtFNcstVO(String baseDate, String baseTime, String local, String pTY, String rN1, String t1h,
+			String rEH, String wSD, String lGT, String sKY) {
 		super();
+		this.baseDate = baseDate;
+		this.baseTime = baseTime;
+		this.local = local;
 		PTY = pTY;
 		RN1 = rN1;
 		T1H = t1h;
@@ -77,6 +91,24 @@ public class UltraSrtFNcstVO {
 		WSD = wSD;
 		LGT = lGT;
 		SKY = sKY;
+	}
+	public String getBaseDate() {
+		return baseDate;
+	}
+	public void setBaseDate(String baseDate) {
+		this.baseDate = baseDate;
+	}
+	public String getBaseTime() {
+		return baseTime;
+	}
+	public void setBaseTime(String baseTime) {
+		this.baseTime = baseTime;
+	}
+	public String getLocal() {
+		return local;
+	}
+	public void setLocal(String local) {
+		this.local = local;
 	}
 	public UltraSrtFNcstVO() {
 		super();

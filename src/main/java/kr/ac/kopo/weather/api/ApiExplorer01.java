@@ -7,15 +7,11 @@ import java.io.BufferedReader;
 //import java.io.IOException;
 
 public class ApiExplorer01 implements IApi{
+	private String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
+    
 	/** 단기예보 ~3일 */
 	public String api(String date, String time, String nx, String ny){
         StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
-        String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
-        
-        String d = "20240119";
-        String t = "1100";
-        String x = "55";
-        String y = "127";
         try {
         	
         	// 초단기 실황 조회

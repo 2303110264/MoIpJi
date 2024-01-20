@@ -3,13 +3,11 @@ package kr.ac.kopo.weather.dao;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -18,10 +16,78 @@ import kr.ac.kopo.weather.api.ApiExplorer01;
 import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
 
 public class WeatherDAO {
-	// 시간 /장소 받아와야해!! (아직안받음)
-	public UltraSrtFNcstVO GPT(String nx, String ny) {
+	
+	public UltraSrtFNcstVO readCode(UltraSrtFNcstVO vo) {
+		vo.setPTY(transPTY(vo.getPTY()));
+		vo.setT1H(transTIH(vo.getT1H()));
+		vo.setREH(transREH(vo.getREH()));
+		vo.setWSD(transWSD(vo.getWSD()));
+		vo.setLGT(transLGT(vo.getLGT()));
+		vo.setSKY(transSKY(vo.getSKY()));
+		double RNI = Double.parseDouble(vo.getRN1());
+		vo.setRN1(transRNI(RNI));
+		return vo;
+	}
+
+	public String transPTY(String PTY) {
+		switch(PTY) {
+		case "0":
+			return "맑음";
+		case "1":
+			return "비";
+		case "2":
+			return "비/눈";
+		case "3":
+			return "눈";
+		case "5":
+			return "빗방울";
+		case "6":
+			return "빗방울눈날림";
+		case "7":
+			return "눈날림";
+		}
+		return null;
+	}
+	public String transTIH(String TIH) {
+		return TIH+"℃";
+	}
+	public String transREH(String REH) {
+		// 습도
+		return REH+"%";
+	}
+	public String transWSD(String WSD) {
+		// 바람 세기
+		return WSD+"m/s";
+	}
+	public String transLGT(String LGT) {
+		if (LGT!=null) return "번개 있음";
+		return "없음";
+	}
+	public String transSKY(String SKY) {
+		if(SKY==null) return null;
+		switch(SKY) {
+		case "1":
+			return "맑음";
+		case "3":
+			return "구름 많음";
+		case "4":
+			return "흐림";
+		}
+		return "check transSKY or SKY value";
+	}
+	public String transRNI(double RNI) {
+		if(RNI < 1.0f) return "1.0mm미만 ";		
+		else if(RNI >= 1.0f && RNI < 30.0f) return "1.0~29.0mm";
+		else if(RNI >= 30.0f && RNI < 50.0f) return "30.0~50.0mm";
+		else return "50.0mm이상";
+		
+	}
+	// 시간 /장소 받아와야해!! (아직안받음)-(시간 추가함!)
+	// 받아오지 않은 이유: api 제공 시간이 매 시각 40분부터임!
+	//(실제로는 20-30분에 올라오는 것 같긴 함)
+	public UltraSrtFNcstVO xmlToUltraSrtVO(String nx, String ny) {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MINUTE, -40); // api 제공시간때문
+		c.add(Calendar.MINUTE, -40); // api 제공시간때문에 추가된 딜레이
 		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
 		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
 		// 초단기/단기 예보
@@ -42,51 +108,71 @@ public class WeatherDAO {
             Node body = getChildNode(root, "body");
 
             // items 정보 가져오기
-            Node items = getChildNode(body, "items");
-            NodeList itemList = items.getChildNodes();
+            Node items = getChildNode(body, "items"); // <items>
+            NodeList itemList = items.getChildNodes(); // <item> *n
             UltraSrtFNcstVO u = new UltraSrtFNcstVO();
-
+            String category = "";
+            
             // 각 item에 대한 정보 출력
             for (int i = 0; i < itemList.getLength(); i++) {
-                Node item = itemList.item(i);
-
-                String baseDate = getChildNodeValue(item, "baseDate");
-                String baseTime = getChildNodeValue(item, "baseTime");
-                String category = getChildNodeValue(item, "category");
-                String obsrValue = getChildNodeValue(item, "obsrValue");
-
-                System.out.println("Base Date: " + baseDate);
-                System.out.println("Base Time: " + baseTime);
-                System.out.println("Category: " + category);
-                System.out.println("Nx: " + nx);
-                System.out.println("Ny: " + ny);
-                System.out.println("Observed Value: " + obsrValue);
-                System.out.println("---------------");
+                Node item = itemList.item(i); // <item>
+                NodeList nodeList = item.getChildNodes(); // 드디어 받아야 할 반환값 리스트
                 
-				switch(category) {
-				case "PTY": 
-					u.setPTY(obsrValue); 
-					break;
-				case "RN1":
-					u.setRN1(obsrValue);
-					break;
-				case "T1H":
-					u.setT1H(obsrValue);
-					break;
-				case "REH":
-					u.setREH(obsrValue);
-					break;
-				case "WSD":
-					u.setWSD(obsrValue);
-					break;
-				case "LGT":
-					u.setLGT(obsrValue);
-					break;
-				case "SKY":
-					u.setSKY(obsrValue);
-					break;
-				}
-            }
+                for (int j = 0; j < nodeList.getLength(); j++) {
+                	Node node = nodeList.item(j);
+	                // 날짜
+	                if (node.getNodeName().equals("baseDate")) {
+	                	u.setBaseDate(node.getTextContent());
+	                // 시간
+	                }else if(node.getNodeName().equals("baseTime")) {
+	                	u.setBaseTime(node.getTextContent());
+	                // 날씨코드
+	                }else if(node.getNodeName().equals("category")) {
+	                	category = node.getTextContent();
+	                // 코드별 값 자동 대입
+	                }else if(node.getNodeName().equals("obsrValue")) {
+	                	String obsrValue = node.getTextContent();
+	                	switch(category) {
+	                	case "PTY": 
+	                		u.setPTY(obsrValue); 
+	                		break;
+	                	case "RN1":
+	                		u.setRN1(obsrValue);
+	                		break;
+	                	case "T1H":
+	                		u.setT1H(obsrValue);
+	                		break;
+	                	case "REH":
+	                		u.setREH(obsrValue);
+	                		break;
+	                	case "WSD":
+	                		u.setWSD(obsrValue);
+	                		break;
+	                	case "LGT":
+	                		u.setLGT(obsrValue);
+	                		break;
+	                	case "SKY":
+	                		u.setSKY(obsrValue);
+	                		break;
+	                	}
+	                }
+                }
+
+            }   
+            // 초단기예보/실황용 : LGT, SKY == 예보 전용 나머지 공용
+                System.out.println("---------------");
+                System.out.println("Base Date: " + u.getBaseDate());
+                System.out.println("Base Time: " + u.getBaseTime());
+                System.out.println("PTY(강수형태): " + u.getPTY());
+                System.out.println("RNI(강수량): " + u.getRN1());
+                System.out.println("TIH(기온): " + u.getT1H());
+                System.out.println("REH(습도): " + u.getREH());
+                System.out.println("WSD(풍속): " + u.getWSD());
+                System.out.println("LGT(번개): " + u.getLGT());		// 실황일 경우
+                System.out.println("SKY(하늘 상태): " + u.getSKY());	// null값
+                System.out.println("x좌표: " + nx);
+                System.out.println("y좌표: " + ny);
+                System.out.println("---------------");
             return u;
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,28 +180,20 @@ public class WeatherDAO {
         }
     }
 
-    // 주어진 노드의 자식 중에서 특정한 이름의 자식 노드를 가져오는 메서드
-    private static Node getChildNode(Node parent, String childName) {
-        NodeList nodeList = parent.getChildNodes();
+    // 주어진 노드의 자식 중에서 특정한 이름의 자식 노드 찾기
+    public Node getChildNode(Node parent, String childName) {
+    	NodeList nodeList = parent.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(childName)) {
-                return node;
+            	return node;
             }
-        }
-        return null;
-    }
-
-    // 주어진 노드의 자식 중에서 특정한 이름의 자식 노드의 텍스트 값을 가져오는 메서드
-    private static String getChildNodeValue(Node parent, String childName) {
-        Node childNode = getChildNode(parent, childName);
-        if (childNode != null) {
-            return childNode.getTextContent();
         }
         return null;
 	}
     
-	private Document xmlToDocument(String xml) {
+    // String을 Document 형태로 변환하기
+	public Document xmlToDocument(String xml) {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -129,114 +207,6 @@ public class WeatherDAO {
 		
 		return null;
 	}
-
-	public UltraSrtFNcstVO nodeToVO(String date, String time, String nx, String ny) {
-		ApiExplorer01 a = new ApiExplorer01();
-		String xml = a.api(date, time, nx, ny);
-
-		UltraSrtFNcstVO u = new UltraSrtFNcstVO();
-
-		try{
-			Document xmlDoc = xmlToDocument(xml);
-			// root element 취득
-			Element element = xmlDoc.getDocumentElement();
-			// child node 취득
-			NodeList list = element.getChildNodes();
-			// child node 가 1개 이상인 경우
-			if(list.getLength() > 0) {
-				for(int i=0; i<list.getLength(); i++) {
-			
-					NodeList childList = list.item(i).getChildNodes();
-			
-					if(childList.getLength() > 0) {
-						for (int j = 0; j < childList.getLength(); j++) {
-							Node item = childList.item(j);
-							
-			          // 데이터가 있는 애들만 출려되게 한다.
-							if(item.getNodeName().equals("#text")==false) {
-								for(int k = 0; k < ((NodeList) item).getLength(); j++) {
-								String n = item.getTextContent();
-								System.out.println(item.getNodeName());
-								System.out.println(n);
-								if (item.getNodeName().equals("item")){
-									switch(item.getNodeName()) {
-									case "PTY": 
-										u.setPTY(n); 
-										break;
-									case "RN1":
-										u.setRN1(n);
-										break;
-									case "T1H":
-										u.setT1H(n);
-										break;
-									case "REH":
-										u.setREH(n);
-										break;
-									case "WSD":
-										u.setWSD(n);
-										break;
-									case "LGT":
-										u.setLGT(n);
-										break;
-									case "SKY":
-										u.setSKY(n);
-										break;
-									}
-								}
-			          }
-			        }
-			      }
-			      System.out.println();
-			    }
-			  }
-				return u;
-		}
-			} catch (Exception e) {
-		  // TODO Auto-generated catch block
-		  e.printStackTrace();
-		}
-		return null;
-		
-		//
-		
-		/*
-		UltraSrtFNcstVO u = new UltraSrtFNcstVO();
-		// 출력부
-		for(int i = 0; i < childList.getLength(); i++) {
-			Node item = childList.item(i); // item(index) 메서드를 이용해 요소 가져올 수 있고, 공백 시작 - 태그/공백 반복하며 저장되어있음.
-			if(item.getNodeType() == Node.ELEMENT_NODE) { // 노드의 타입이 Element일 경우(공백이 아닌 경우)
-				// 태그에 든 내용 : getTextContext() = 태그 사이 필요 데이터 픽업?
-				String n = item.getTextContent();
-				System.out.println(item.getNodeName());
-				System.out.println(n);
-				switch(item.getNodeName()) {
-				case "PTY": 
-					u.setPTY(n); 
-					break;
-				case "RN1":
-					u.setRN1(n);
-					break;
-				case "T1H":
-					u.setT1H(n);
-					break;
-				case "REH":
-					u.setREH(n);
-					break;
-				case "WSD":
-					u.setWSD(n);
-					break;
-				case "LGT":
-					u.setLGT(n);
-					break;
-				case "SKY":
-					u.setSKY(n);
-					break;
-				}
-			} else {
-				System.out.println("-");
-			}
-		}
-		*/
-	}
+	
 	
 }
