@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 import java.io.BufferedReader;
 //import java.io.IOException;
 // 중기예보 (3~10일)
-public class ApiExplorer02 implements IApi{
+public class ApiExplorer02{
     public String api(String t, String loc){
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"); /*URL*/
         String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf%2B8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3%2FfEDVP%2BpkV1YyVqzGFrA%3D%3D";
@@ -47,9 +47,4 @@ public class ApiExplorer02 implements IApi{
         }
 
 
-	@Override
-	public String api(String date, String time, String nx, String ny) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

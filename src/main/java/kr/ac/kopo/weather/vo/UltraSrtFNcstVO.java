@@ -3,28 +3,45 @@ package kr.ac.kopo.weather.vo;
 
 public class UltraSrtFNcstVO {
 	
+	private String x;
+	private String y;
 	private String baseDate;
 	private String baseTime;
+	
 	private String local;
 	
 	//(초단기) 없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7)
-    private String PTY; // 강수형태 (코드값)
+	private String PTY; // 강수형태 (코드값)
+	
+	//-, null, 0 = 강수없음 / 0.1~1 = 1.0mm 미만 / 1~30 = 실수값+mm / 30~50 = 30.0~50.0mm / 50 이상 = 50.0mm 이상
+	private String RN1; // 강수량 1h (㎜)
+	
+	private String T1H; // 기온 (℃)
+	private String REH; // 습도 (%)
+	private String WSD; // 풍속(m/s)
+	//private double UUU; // 동서바람 (m/s)
+	//private double VVV; // 남북바람 (m/s)
+	//private double VEC; // 풍향 (deg)
+	
+	// 초단기 예보
+	private String LGT; // 낙뢰 (kA 킬로암페어)
+	// 맑음(1), 구름많음(3), 흐림(4)
+	private String SKY;
 
-    //-, null, 0 = 강수없음 / 0.1~1 = 1.0mm 미만 / 1~30 = 실수값+mm / 30~50 = 30.0~50.0mm / 50 이상 = 50.0mm 이상
-    private String RN1; // 강수량 1h (㎜)
+	
+	public String getX() {
+		return x;
+	}
+	public void setX(String x) {
+		this.x = x;
+	}
+	public String getY() {
+		return y;
+	}
+	public void setY(String y) {
+		this.y = y;
+	}
     
-    private String T1H; // 기온 (℃)
-    private String REH; // 습도 (%)
-    private String WSD; // 풍속(m/s)
-    //private double UUU; // 동서바람 (m/s)
-    //private double VVV; // 남북바람 (m/s)
-    //private double VEC; // 풍향 (deg)
-    
-    
-    // 초단기 예보
-    private String LGT; // 낙뢰 (kA 킬로암페어)
-    // 맑음(1), 구름많음(3), 흐림(4)
-    private String SKY;
 	public String getPTY() {
 		return PTY;
 	}

@@ -12,7 +12,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import kr.ac.kopo.weather.api.ApiExplorer01;
+import kr.ac.kopo.weather.api.ApiExplorer;
 import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
 
 public class WeatherDAO {
@@ -30,21 +30,22 @@ public class WeatherDAO {
 	}
 
 	public String transPTY(String PTY) {
+		//(초단기) 없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7)
 		switch(PTY) {
 		case "0":
-			return "맑음";
+			return "https://cdn-icons-gif.flaticon.com/11708/11708870.gif";
 		case "1":
-			return "비";
+			return "https://cdn-icons-gif.flaticon.com/6455/6455055.gif";
 		case "2":
-			return "비/눈";
+			return "https://cdn-icons-gif.flaticon.com/6455/6455057.gif";
 		case "3":
-			return "눈";
+			return "https://cdn-icons-gif.flaticon.com/13373/13373268.gif";
 		case "5":
-			return "빗방울";
+			return "https://cdn-icons-gif.flaticon.com/6455/6455029.gif";
 		case "6":
-			return "빗방울눈날림";
+			return "https://cdn-icons-gif.flaticon.com/6455/6455007.gif";
 		case "7":
-			return "눈날림";
+			return "https://cdn-icons-gif.flaticon.com/6455/6455056.gif";
 		}
 		return null;
 	}
@@ -91,18 +92,14 @@ public class WeatherDAO {
 		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
 		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
 		// 초단기/단기 예보
-		ApiExplorer01 a = new ApiExplorer01();
-		String xml = a.api(date, time, nx, ny);
+		ApiExplorer a = new ApiExplorer();
+		String xml = a.ultraSrtNcst(date, time, nx, ny);
 		
 		try {
             // XML 파일 파싱
             Document document = xmlToDocument(xml);
             // 루트 엘리먼트 가져오기
             Node root = document.getDocumentElement();
-            // header 정보 가져오기
-            //Node header = getChildNode(root, "header");
-            //String resultCode = getChildNodeValue(header, "resultCode");
-            //String resultMsg = getChildNodeValue(header, "resultMsg");
 
             // body 정보 가져오기
             Node body = getChildNode(root, "body");
@@ -208,5 +205,48 @@ public class WeatherDAO {
 		return null;
 	}
 	
+	//위도/경도값 grid로 바꾸기
+	private UltraSrtFNcstVO changeGPSToGrid(double lat_X, double lng_Y )
+	{
+	    double RE = 6371.00877; // 지구 반경(km)
+	    double GRID = 5.0; // 격자 간격(km)
+	    double SLAT1 = 30.0; // 투영 위도1(degree)
+	    double SLAT2 = 60.0; // 투영 위도2(degree)
+	    double OLON = 126.0; // 기준점 경도(degree)
+	    double OLAT = 38.0; // 기준점 위도(degree)
+	    double XO = 43; // 기준점 X좌표(GRID)
+	    double YO = 136; // 기1준점 Y좌표(GRID)
+
+	    double DEGRAD = Math.PI / 180.0;
+	    double RADDEG = 180.0 / Math.PI;
+
+	    double re = RE / GRID;
+	    double slat1 = SLAT1 * DEGRAD;
+	    double slat2 = SLAT2 * DEGRAD;
+	    double olon = OLON * DEGRAD;
+	    double olat = OLAT * DEGRAD;
+
+	    double sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+	    sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+	    double sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+	    sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
+	    double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+	    ro = re * sf / Math.pow(ro, sn);
+	    UltraSrtFNcstVO rs = new UltraSrtFNcstVO();
+
+        
+	    //위도/경도 > 그리드
+        double ra = Math.tan(Math.PI * 0.25 + (lat_X) * DEGRAD * 0.5);
+        ra = re * sf / Math.pow(ra, sn);
+        double theta = lng_Y * DEGRAD - olon;
+        if (theta > Math.PI) theta -= 2.0 * Math.PI;
+        if (theta < -Math.PI) theta += 2.0 * Math.PI;
+        theta *= sn;
+        rs.setX((int)Math.floor(ra * Math.sin(theta) + XO + 0.5)+"");
+        rs.setY((int)Math.floor(ro - ra * Math.cos(theta) + YO + 0.5)+"");
+
+        return rs;
+	}
+
 	
 }
