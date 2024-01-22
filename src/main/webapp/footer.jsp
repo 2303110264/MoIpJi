@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <hr>
 <footer>
-©2303110264
+©Daquarter
 </footer>

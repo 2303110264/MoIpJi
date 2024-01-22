@@ -7,6 +7,7 @@
 	Date currentTime = new Date();
 	String today = new SimpleDateFormat("yyyy년 MM월 dd일\nHH시 mm분").format(currentTime).toString();
 	
+	// javascripit로 시계 구현 (후순위)
 	pageContext.setAttribute("today", today.replaceAll("\\r?\\n", "<br/>"));
 %>
 <h2>
