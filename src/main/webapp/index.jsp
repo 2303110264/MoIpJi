@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% 
-
+	// 무한 submit 방지용
 	request.setCharacterEncoding("utf-8");
 	String submitted = (String)request.getParameter("submitted");
 	pageContext.setAttribute("submitted", submitted);
@@ -13,9 +13,12 @@
 <title>MoIpJi-오늘 뭐 입지?</title>
 </head>
 <script type="text/javascript">
-
+	var check = "${submitted}";
+	
 </script>
 <body>
+	<!-- 
+	 -->
 	<jsp:include page = "location.jsp"></jsp:include>
 	<jsp:include page = "header.jsp"></jsp:include>
 	<a href="./forecast.jsp">
