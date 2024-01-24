@@ -1,4 +1,6 @@
 package kr.ac.kopo.weather.dao;
+import java.io.BufferedReader;
+//import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
@@ -14,9 +16,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
-
-import java.io.BufferedReader;
-//import java.io.IOException;
 
 public class ApiDAO{
 	private String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
@@ -76,13 +75,8 @@ public class ApiDAO{
         }
         }
 	
-	public String ultraSrtFcst(String nx, String ny){
+	public String ultraSrtFcst(String date, String time, String nx, String ny){
 		try {
-			Calendar c = Calendar.getInstance();
-    		c.add(Calendar.MINUTE, -40); // api 제공시간때문에 추가된 딜레이
-    		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
-    		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
-    		
 			// 초단기 예보 조회
 			urlBuilder.append("getUltraSrtFcst");
 			

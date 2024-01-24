@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	
-
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,12 +12,11 @@
 	<a href="./index.jsp">
 		<button>현재</button>
 	</a>
-	
 
 
 
 
-	<jsp:include page = "./cloth.jsp"></jsp:include>
+
 </body>
 	<jsp:include page = "./footer.jsp"></jsp:include>
 </html>
