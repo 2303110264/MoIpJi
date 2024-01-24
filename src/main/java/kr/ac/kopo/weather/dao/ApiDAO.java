@@ -76,8 +76,13 @@ public class ApiDAO{
         }
         }
 	
-	public String ultraSrtFcst(String date, String time, String nx, String ny){
+	public String ultraSrtFcst(String nx, String ny){
 		try {
+			Calendar c = Calendar.getInstance();
+    		c.add(Calendar.MINUTE, -40); // api 제공시간때문에 추가된 딜레이
+    		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
+    		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
+    		
 			// 초단기 예보 조회
 			urlBuilder.append("getUltraSrtFcst");
 			

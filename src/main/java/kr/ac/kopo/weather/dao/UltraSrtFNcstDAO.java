@@ -1,5 +1,7 @@
 package kr.ac.kopo.weather.dao;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -186,6 +188,15 @@ public class UltraSrtFNcstDAO {
             }
         }
         return null;
+	}
+	public List<UltraSrtFNcstVO> docToUltraSrtVOList(UltraSrtFNcstVO vo, Document doc) {
+		
+		return null;
+	}
+	
+	public List<UltraSrtFNcstVO> fixList(List<UltraSrtFNcstVO> fcstList){
+		
+		return null;
 	}
     
 }
