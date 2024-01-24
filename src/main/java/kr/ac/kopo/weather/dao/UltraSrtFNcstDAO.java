@@ -218,31 +218,31 @@ public class UltraSrtFNcstDAO {
                 
                 String category = nodeList.item(2).getNodeName();
                 String fcstValue = nodeList.item(6).getTextContent();
-                	switch(category) {
-                	case "PTY": 
-                		u.setPTY(fcstValue); 
-                		break;
-                	case "RN1":
-                		u.setRN1(fcstValue);
-                		break;
-                	case "T1H":
-                		u.setT1H(fcstValue);
-                		break;
-                	case "REH":
-                		u.setREH(fcstValue);
-                		break;
-                	case "WSD":
-                		u.setWSD(fcstValue);
-                		break;
-                	case "LGT":
-                		u.setLGT(fcstValue);
-                		break;
-                	case "SKY":
-                		u.setSKY(fcstValue);
-                		break;
-                	}
+            	switch(category) {
+            	case "PTY": 
+            		u.setPTY(fcstValue); 
+            		break;
+            	case "RN1":
+            		u.setRN1(fcstValue);
+            		break;
+            	case "T1H":
+            		u.setT1H(fcstValue);
+            		break;
+            	case "REH":
+            		u.setREH(fcstValue);
+            		break;
+            	case "WSD":
+            		u.setWSD(fcstValue);
+            		break;
+            	case "LGT":
+            		u.setLGT(fcstValue);
+            		break;
+            	case "SKY":
+            		u.setSKY(fcstValue);
+            		break;
+            	}
                 }
-            // 초단기예보/실황용 : LGT, SKY == 예보 전용 나머지 공용
+Z            // 초단기예보/실황용 : LGT, SKY == 예보 전용 나머지 공용
                 System.out.println("---------------");
                 System.out.println("Base Date: " + u.getBaseDate());
                 System.out.println("Base Time: " + u.getBaseTime());
