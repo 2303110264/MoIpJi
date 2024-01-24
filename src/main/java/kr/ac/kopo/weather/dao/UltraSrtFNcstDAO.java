@@ -1,5 +1,6 @@
 package kr.ac.kopo.weather.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -189,9 +190,77 @@ public class UltraSrtFNcstDAO {
         }
         return null;
 	}
-	public List<UltraSrtFNcstVO> docToUltraSrtVOList(UltraSrtFNcstVO vo, Document doc) {
-		
-		return null;
+	public List<UltraSrtFNcstVO> docToUltraSrtVOList(UltraSrtFNcstVO vo, Document document) {
+		try {
+            // 루트 엘리먼트 가져오기
+            Node root = document.getDocumentElement();
+
+            // body 정보 가져오기
+            Node body = getChildNode(root, "body");
+
+            // items 정보 가져오기
+            Node items = getChildNode(body, "items"); // <items>
+            NodeList itemList = items.getChildNodes(); // <item> *n
+            
+            List<UltraSrtFNcstVO> flist = new ArrayList<UltraSrtFNcstVO>(itemList.getLength());
+            
+            // 각 item에 대한 정보 출력
+            for (int i = 0; i < itemList.getLength(); i++) {
+                Node item = itemList.item(i); // <item>
+                NodeList nodeList = item.getChildNodes(); // 드디어 받아야 할 반환값 리스트
+                // nodeList.item(0) = baseDate
+                // nodeList.item(1) = baseTime
+                // nodeList.item(2) = category
+                // nodeList.item(3) = category
+                // nodeList.item(4) = fcstDate
+                // nodeList.item(5) = fcstTime
+                // nodeList.item(6) = fcstValue
+                
+                String category = nodeList.item(2).getNodeName();
+                String fcstValue = nodeList.item(6).getTextContent();
+                	switch(category) {
+                	case "PTY": 
+                		u.setPTY(fcstValue); 
+                		break;
+                	case "RN1":
+                		u.setRN1(fcstValue);
+                		break;
+                	case "T1H":
+                		u.setT1H(fcstValue);
+                		break;
+                	case "REH":
+                		u.setREH(fcstValue);
+                		break;
+                	case "WSD":
+                		u.setWSD(fcstValue);
+                		break;
+                	case "LGT":
+                		u.setLGT(fcstValue);
+                		break;
+                	case "SKY":
+                		u.setSKY(fcstValue);
+                		break;
+                	}
+                }
+            // 초단기예보/실황용 : LGT, SKY == 예보 전용 나머지 공용
+                System.out.println("---------------");
+                System.out.println("Base Date: " + u.getBaseDate());
+                System.out.println("Base Time: " + u.getBaseTime());
+                System.out.println("PTY(강수형태): " + u.getPTY());
+                System.out.println("RNI(강수량): " + u.getRN1());
+                System.out.println("TIH(기온): " + u.getT1H());
+                System.out.println("REH(습도): " + u.getREH());
+                System.out.println("WSD(풍속): " + u.getWSD());
+                System.out.println("LGT(번개): " + u.getLGT());		// 실황일 경우
+                System.out.println("SKY(하늘 상태): " + u.getSKY());	// null값
+                System.out.println("x좌표: " + u.getX());
+                System.out.println("y좌표: " + u.getY());
+                System.out.println("---------------");
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 	
 	public List<UltraSrtFNcstVO> fixList(List<UltraSrtFNcstVO> fcstList){
