@@ -17,8 +17,8 @@
 		<button onclick="NcstToFcst()">예보</button>
 	</a>
 	
+	<div style="display:none;">
 	<hr>
-	<div>
 		해야할 것: 
 		<br>1. xml형태로 넘어온 값을 처리하기 
 		<input type="checkbox" checked="checked"/>
