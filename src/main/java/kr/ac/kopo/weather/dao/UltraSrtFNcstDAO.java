@@ -244,7 +244,8 @@ public class UltraSrtFNcstDAO {
             		flist.get(cnt).setSKY(fcstValue);
             		break;
             	}
-                }
+            	cnt++;
+            }
             return flist;
         } catch (Exception e) {
             e.printStackTrace();
