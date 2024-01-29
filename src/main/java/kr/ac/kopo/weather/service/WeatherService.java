@@ -1,5 +1,7 @@
 package kr.ac.kopo.weather.service;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 
 import kr.ac.kopo.weather.dao.ApiDAO;
@@ -10,18 +12,28 @@ public class WeatherService {
 	private UltraSrtFNcstDAO usdao = new UltraSrtFNcstDAO();
 	private ApiDAO adao = new ApiDAO();
 	
-	public UltraSrtFNcstVO getUltraSrtNcst(UltraSrtFNcstVO vo) {
+	public UltraSrtFNcstVO getUltraSrtNcst(String x, String y) {
 		try {
-		String xml = adao.ultraSrtNcst(vo.getX(), vo.getY());
-		Document doc = adao.xmlToDocument(xml);
-		vo = usdao.fix(usdao.docToUltraSrtVO(vo, doc));
+			UltraSrtFNcstVO vo = adao.changeGPSToGrid(x, y);
+			String xml = adao.ultraSrtNcst(vo.getX(), vo.getY());
+			Document doc = adao.xmlToDocument(xml);
+			vo = usdao.fix(usdao.docToUltraSrtVO(vo, doc));
+			return vo; 
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		return vo; 
 	}
-	public UltraSrtFNcstVO GPSToGrid(String x, String y) {
-		return adao.changeGPSToGrid(x, y);
+	public List<UltraSrtFNcstVO> getWeatherList(String x, String y){
+		try {
+			UltraSrtFNcstVO vo = adao.changeGPSToGrid(x, y);
+			String xml = adao.ultraSrtFcst(vo.getX(), vo.getY());
+			Document doc = adao.xmlToDocument(xml);
+			List<UltraSrtFNcstVO> flist = usdao.docToUltraSrtVOList(vo, doc);
+			return flist;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

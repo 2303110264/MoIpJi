@@ -75,8 +75,15 @@ public class ApiDAO{
         }
         }
 	
-	public String ultraSrtFcst(String date, String time, String nx, String ny){
+	public String ultraSrtFcst(String nx, String ny){
 		try {
+			
+			Calendar c = Calendar.getInstance();
+    		c.add(Calendar.MINUTE, -45); // api 제공시간때문에 추가된 딜레이
+    		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
+    		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
+    		
+			
 			// 초단기 예보 조회
 			urlBuilder.append("getUltraSrtFcst");
 			
@@ -109,7 +116,6 @@ public class ApiDAO{
 			}
 			rd.close();
 			conn.disconnect();
-			
 			return sb.toString();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -202,7 +208,6 @@ public class ApiDAO{
 	    sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
 	    double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
 	    ro = re * sf / Math.pow(ro, sn);
-	    UltraSrtFNcstVO rs = new UltraSrtFNcstVO();
 
         
 	    //위도/경도 > 그리드
@@ -212,14 +217,16 @@ public class ApiDAO{
         if (theta > Math.PI) theta -= 2.0 * Math.PI;
         if (theta < -Math.PI) theta += 2.0 * Math.PI;
         theta *= sn;
+        
+        UltraSrtFNcstVO rs = new UltraSrtFNcstVO();
         rs.setX((int)Math.floor(ra * Math.sin(theta) + XO + 0.5)+"");
         rs.setY((int)Math.floor(ro - ra * Math.cos(theta) + YO + 0.5)+"");
 
         return rs;
         }catch(Exception e) {
         	e.printStackTrace();
+        	return null;
         }
-		return null;
 	}
 
 }

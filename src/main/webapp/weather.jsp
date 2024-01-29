@@ -9,8 +9,7 @@
 	String ny = (String)request.getParameter("lonY");
 
 	WeatherService ws = new WeatherService();
-	UltraSrtFNcstVO u = ws.GPSToGrid(nx, ny);
-	u = ws.getUltraSrtNcst(u);
+	UltraSrtFNcstVO u = ws.getUltraSrtNcst(nx, ny);
 	
 	//String uPrint = u.print().replaceAll("\\r?\\n", "<br/>"); //개행문자 삽입
 	//pageContext.setAttribute("uPrint", uPrint);	

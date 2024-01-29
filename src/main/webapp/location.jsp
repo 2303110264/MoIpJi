@@ -16,7 +16,6 @@ navigator.geolocation.getCurrentPosition(function(pos) {
     
     const form = document.createElement('form'); 
 	form.setAttribute('method', 'post'); 
-	form.setAttribute('action', 'index.jsp');
 	
 	const submitted = document.createElement('input'); 
 	submitted.setAttribute('type', 'hidden'); 

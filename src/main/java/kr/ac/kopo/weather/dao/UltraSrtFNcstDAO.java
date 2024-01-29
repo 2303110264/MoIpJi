@@ -201,10 +201,20 @@ public class UltraSrtFNcstDAO {
             // items 정보 가져오기
             Node items = getChildNode(body, "items"); // <items>
             NodeList itemList = items.getChildNodes(); // <item> *n
-            
-            List<UltraSrtFNcstVO> flist = new ArrayList<UltraSrtFNcstVO>(itemList.getLength());
+            System.out.println(itemList.getLength());
+            List<UltraSrtFNcstVO> flist = new ArrayList<UltraSrtFNcstVO>();
+            for (int i = 0; i<6 ; i++) {
+            	flist.add(new UltraSrtFNcstVO());
+            }
             int cnt = 0;
-            
+            /*
+            for (int i = 0; i < itemList.getLength(); i++) {
+                Node item = itemList.item(i); // <item>
+                NodeList nodeList = item.getChildNodes(); // 드디어 받아야 할 반환값 리스트
+                
+                for (int j = 0; j < nodeList.getLength(); j++) {
+                	Node node = nodeList.item(j);
+             */
             // 각 item에 대한 정보 출력
             for (int i = 0; i < itemList.getLength(); i++) {
                 Node item = itemList.item(i); // <item>
@@ -215,12 +225,14 @@ public class UltraSrtFNcstDAO {
                 // nodeList.item(3) = fcstDate
                 // nodeList.item(4) = fcstTime
                 // nodeList.item(5) = fcstValue
-                
                 if(cnt==6) cnt=0;
-                flist.get(i).setBaseDate(nodeList.item(0).getTextContent());
-                flist.get(i).setBaseTime(nodeList.item(1).getTextContent());
-                String category = nodeList.item(2).getNodeName();
-                String fcstValue = nodeList.item(6).getTextContent();
+                System.out.println(flist.size());
+                flist.get(cnt).setBaseDate(nodeList.item(3).getTextContent());
+                flist.get(cnt).setBaseTime(nodeList.item(4).getTextContent());
+                flist.get(cnt).setX(vo.getX());
+                flist.get(cnt).setY(vo.getY());
+                String category = nodeList.item(2).getTextContent();
+                String fcstValue = nodeList.item(5).getTextContent();
             	switch(category) {
             	case "PTY": 
             		flist.get(cnt).setPTY(fcstValue); 
