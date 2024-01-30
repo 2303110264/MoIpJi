@@ -22,6 +22,8 @@ public class ApiDAO{
 	StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
     
 	/** 초단기예보-단기예보 최대 ~3일 */
+
+	// 초단기 실황 조회
 	public String ultraSrtNcst(String nx, String ny){
         try {
         	Calendar c = Calendar.getInstance();
@@ -29,15 +31,8 @@ public class ApiDAO{
     		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
     		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
     		
-        	
-        	// 초단기 실황 조회
         	urlBuilder.append("getUltraSrtNcst");
         	
-        	// 초단기 예보 조회
-        	// urlBuilder.append("getUltraSrtFcst");
-        	
-        	// 단기 예보 조회
-        	// urlBuilder.append("getVilageFcst");
 	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+URLEncoder.encode(key, "UTF-8")); /*Service Key*/
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
 	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
@@ -51,8 +46,6 @@ public class ApiDAO{
 	        System.out.println(url);
 	        conn.setRequestMethod("GET");
 	        conn.setRequestProperty("Content-type", "application/json");
-	        
-	        System.out.println("Response code: " + conn.getResponseCode()); // get response code
 	        
 	        BufferedReader rd;
 	        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
@@ -73,8 +66,9 @@ public class ApiDAO{
         	e.printStackTrace();
         	return null;
         }
-        }
+    }
 	
+	// 초단기 예보 조회
 	public String ultraSrtFcst(String nx, String ny){
 		try {
 			
@@ -83,8 +77,6 @@ public class ApiDAO{
     		String time = new SimpleDateFormat("HHmm").format(c.getTime()).toString();
     		String date = new SimpleDateFormat("yyyyMMdd").format(c.getTime()).toString();
     		
-			
-			// 초단기 예보 조회
 			urlBuilder.append("getUltraSrtFcst");
 			
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+URLEncoder.encode(key, "UTF-8")); /*Service Key*/
@@ -123,9 +115,9 @@ public class ApiDAO{
 		}
 	}
 
+	// 단기 예보 조회
 	public String villageFcst(String date, String time, String nx, String ny){
 		try {
-			// 단기 예보 조회
 			urlBuilder.append("getVilageFcst");
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+URLEncoder.encode(key, "UTF-8")); /*Service Key*/
 			urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -163,6 +155,7 @@ public class ApiDAO{
 			return null;
 		}
 	}
+	
 	// String을 Document 형태로 변환하기
 	public Document xmlToDocument(String xml) {
 		try {

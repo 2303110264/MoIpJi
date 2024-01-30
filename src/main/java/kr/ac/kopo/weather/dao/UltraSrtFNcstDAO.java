@@ -117,58 +117,67 @@ public class UltraSrtFNcstDAO {
                 Node item = itemList.item(i); // <item>
                 NodeList nodeList = item.getChildNodes(); // 드디어 받아야 할 반환값 리스트
                 
-                for (int j = 0; j < nodeList.getLength(); j++) {
-                	Node node = nodeList.item(j);
-	                // 날짜
-	                if (node.getNodeName().equals("baseDate")) {
-	                	u.setBaseDate(node.getTextContent());
-	                // 시간
-	                }else if(node.getNodeName().equals("baseTime")) {
-	                	u.setBaseTime(node.getTextContent());
-	                // 날씨코드
-	                }else if(node.getNodeName().equals("category")) {
-	                	category = node.getTextContent();
-	                // 코드별 값 자동 대입
-	                }else if(node.getNodeName().equals("obsrValue")) {
-	                	String obsrValue = node.getTextContent();
-	                	switch(category) {
-	                	case "PTY": 
-	                		u.setPTY(obsrValue); 
-	                		break;
-	                	case "RN1":
-	                		u.setRN1(obsrValue);
-	                		break;
-	                	case "T1H":
-	                		u.setT1H(obsrValue);
-	                		break;
-	                	case "REH":
-	                		u.setREH(obsrValue);
-	                		break;
-	                	case "WSD":
-	                		u.setWSD(obsrValue);
-	                		break;
-	                	case "LGT":
-	                		u.setLGT(obsrValue);
-	                		break;
-	                	case "SKY":
-	                		u.setSKY(obsrValue);
-	                		break;
-	                	}
-	                }
-                }
-
-            }   
+                // nodeList.item(0) = baseDate
+                // nodeList.item(1) = baseTime
+                // nodeList.item(2) = category
+                // nodeList.item(3) = nx
+                // nodeList.item(4) = ny
+                // nodeList.item(5) = obsrValue
+                
+	                /*
+	                 * if(cnt==6) cnt=0;
+                String category = nodeList.item(2).getTextContent();
+                String fcstValue = nodeList.item(5).getTextContent();
+            	switch(category) {
+            	case "SKY":
+            		flist.get(cnt).setSKY(fcstValue);
+            		break;
+            	}
+            	cnt++;
+	                 */
+            	// 날짜
+            	u.setBaseDate(nodeList.item(0).getTextContent());
+                // 시간
+            	u.setBaseTime(nodeList.item(1).getTextContent());
+                // 날씨코드
+            	category = nodeList.item(2).getTextContent();
+                // 코드별 값 자동 대입
+            	String obsrValue = nodeList.item(5).getTextContent();
+            	switch(category) {
+            	case "PTY": 
+            		u.setPTY(obsrValue); 
+            		break;
+            	case "RN1":
+            		u.setRN1(obsrValue);
+            		break;
+            	case "T1H":
+            		u.setT1H(obsrValue);
+            		break;
+            	case "REH":
+            		u.setREH(obsrValue);
+            		break;
+            	case "WSD":
+            		u.setWSD(obsrValue);
+            		break;
+            	case "LGT":
+            		u.setLGT(obsrValue);
+            		break;
+            	case "SKY":
+            		u.setSKY(obsrValue);
+            		break;
+            	}
+            	u.setX(nodeList.item(3).getTextContent());
+            	u.setY(nodeList.item(4).getTextContent());
+            }
             // 초단기예보/실황용 : LGT, SKY == 예보 전용 나머지 공용
                 System.out.println("---------------");
                 System.out.println("Base Date: " + u.getBaseDate());
                 System.out.println("Base Time: " + u.getBaseTime());
                 System.out.println("PTY(강수형태): " + u.getPTY());
-                System.out.println("RNI(강수량): " + u.getRN1());
-                System.out.println("TIH(기온): " + u.getT1H());
+                System.out.println("RN1(강수량): " + u.getRN1());
+                System.out.println("T1H(기온): " + u.getT1H());
                 System.out.println("REH(습도): " + u.getREH());
                 System.out.println("WSD(풍속): " + u.getWSD());
-                System.out.println("LGT(번개): " + u.getLGT());		// 실황일 경우
-                System.out.println("SKY(하늘 상태): " + u.getSKY());	// null값
                 System.out.println("x좌표: " + u.getX());
                 System.out.println("y좌표: " + u.getY());
                 System.out.println("---------------");
@@ -201,20 +210,13 @@ public class UltraSrtFNcstDAO {
             // items 정보 가져오기
             Node items = getChildNode(body, "items"); // <items>
             NodeList itemList = items.getChildNodes(); // <item> *n
-            System.out.println(itemList.getLength());
             List<UltraSrtFNcstVO> flist = new ArrayList<UltraSrtFNcstVO>();
             for (int i = 0; i<6 ; i++) {
             	flist.add(new UltraSrtFNcstVO());
+            	flist.get(i).setX(vo.getX());
+            	flist.get(i).setY(vo.getY());
             }
             int cnt = 0;
-            /*
-            for (int i = 0; i < itemList.getLength(); i++) {
-                Node item = itemList.item(i); // <item>
-                NodeList nodeList = item.getChildNodes(); // 드디어 받아야 할 반환값 리스트
-                
-                for (int j = 0; j < nodeList.getLength(); j++) {
-                	Node node = nodeList.item(j);
-             */
             // 각 item에 대한 정보 출력
             for (int i = 0; i < itemList.getLength(); i++) {
                 Node item = itemList.item(i); // <item>
@@ -226,11 +228,8 @@ public class UltraSrtFNcstDAO {
                 // nodeList.item(4) = fcstTime
                 // nodeList.item(5) = fcstValue
                 if(cnt==6) cnt=0;
-                System.out.println(flist.size());
                 flist.get(cnt).setBaseDate(nodeList.item(3).getTextContent());
                 flist.get(cnt).setBaseTime(nodeList.item(4).getTextContent());
-                flist.get(cnt).setX(vo.getX());
-                flist.get(cnt).setY(vo.getY());
                 String category = nodeList.item(2).getTextContent();
                 String fcstValue = nodeList.item(5).getTextContent();
             	switch(category) {
@@ -256,7 +255,12 @@ public class UltraSrtFNcstDAO {
             		flist.get(cnt).setSKY(fcstValue);
             		break;
             	}
+            	System.out.println(flist.get(cnt).toString());
+            	System.out.println(cnt);
             	cnt++;
+            }
+            for(int i = 0; i<6; i++) {
+            	System.out.println(flist.get(i).toString());
             }
             return flist;
         } catch (Exception e) {

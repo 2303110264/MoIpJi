@@ -24,7 +24,7 @@ public class WeatherService {
 			return null;
 		}
 	}
-	public List<UltraSrtFNcstVO> getWeatherList(String x, String y){
+	public List<UltraSrtFNcstVO> getUltraSrtFcst(String x, String y){
 		try {
 			UltraSrtFNcstVO vo = adao.changeGPSToGrid(x, y);
 			String xml = adao.ultraSrtFcst(vo.getX(), vo.getY());

@@ -7,6 +7,7 @@ public class UltraSrtFNcstVO {
 	private String y;
 	private String baseDate;
 	private String baseTime;
+	private String location;
 	
 	//(초단기) 없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7)
 	private String PTY; // 강수형태 (코드값)
@@ -82,29 +83,10 @@ public class UltraSrtFNcstVO {
 	public void setSKY(String sKY) {
 		SKY = sKY;
 	}
-	@Override
-	public String toString() {
-		return "UltraSrtFNcstVO [baseDate=" + baseDate + ", baseTime=" + baseTime + ", PTY=" + PTY
-				+ ", RN1=" + RN1 + ", T1H=" + T1H + ", REH=" + REH + ", WSD=" + WSD + ", LGT=" + LGT + ", SKY=" + SKY
-				+ "]";
-	}
 	public String print() {
 		return "강수형태: "+PTY+"\n강수량: "+RN1+
 				"\n기온: "+T1H+"\n습도: "+REH+"\n풍속: "+WSD+
 				"\n번개: "+LGT+"\n하늘 상태: "+SKY+"\n";
-	}
-	public UltraSrtFNcstVO(String baseDate, String baseTime, String pTY, String rN1, String t1h,
-			String rEH, String wSD, String lGT, String sKY) {
-		super();
-		this.baseDate = baseDate;
-		this.baseTime = baseTime;
-		PTY = pTY;
-		RN1 = rN1;
-		T1H = t1h;
-		REH = rEH;
-		WSD = wSD;
-		LGT = lGT;
-		SKY = sKY;
 	}
 	public String getBaseDate() {
 		return baseDate;
@@ -122,7 +104,34 @@ public class UltraSrtFNcstVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	@Override
+	public String toString() {
+		return "UltraSrtFNcstVO [x=" + x + ", y=" + y + ", baseDate=" + baseDate + ", baseTime=" + baseTime
+				+ ", location=" + location + ", PTY=" + PTY + ", RN1=" + RN1 + ", T1H=" + T1H + ", REH=" + REH
+				+ ", WSD=" + WSD + ", LGT=" + LGT + ", SKY=" + SKY + "]";
+	}
+	public UltraSrtFNcstVO(String x, String y, String baseDate, String baseTime, String location, String pTY,
+			String rN1, String t1h, String rEH, String wSD, String lGT, String sKY) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.baseDate = baseDate;
+		this.baseTime = baseTime;
+		this.location = location;
+		PTY = pTY;
+		RN1 = rN1;
+		T1H = t1h;
+		REH = rEH;
+		WSD = wSD;
+		LGT = lGT;
+		SKY = sKY;
+	}
     
     
     

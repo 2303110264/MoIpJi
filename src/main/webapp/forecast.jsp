@@ -10,7 +10,7 @@
 	String ny = (String)request.getParameter("lonY");
 
 	WeatherService ws = new WeatherService();
-	List<UltraSrtFNcstVO> flist = ws.getWeatherList(nx, ny);
+	List<UltraSrtFNcstVO> flist = ws.getUltraSrtFcst(nx, ny);
 	
 	pageContext.setAttribute("flist", flist);
 %>
@@ -42,7 +42,7 @@
 				<th width="10%">LGT</th>
 				<th width="10%">SKY</th>
 			</tr>
-			<c:forEach items="${ flist }" var="vo">
+			<c:forEach items="${ flist }" var="v">
 				<tr>
 <!-- 
 					<td>
@@ -51,17 +51,17 @@
 						</a>
 					</td>
  -->						
-					<td>${ vo.getX() }</td>
-					<td>${ vo.getY() }</td>				
-					<td>${ vo.getBaseDate() }</td>				
-					<td>${ vo.getBaseTime() }</td>				
-					<td>${ vo.getPTY() }</td>				
-					<td>${ vo.getRN1() }</td>				
-					<td>${ vo.getT1H() }</td>				
-					<td>${ vo.getREH() }</td>				
-					<td>${ vo.getWSD() }</td>				
-					<td>${ vo.getLGT() }</td>				
-					<td>${ vo.getSKY() }</td>				
+					<td>${ v.getX() }</td>
+					<td>${ v.getY() }</td>				
+					<td>${ v.getBaseDate() }</td>				
+					<td>${ v.getBaseTime() }</td>				
+					<td>${ v.getPTY() }</td>				
+					<td>${ v.getRN1() }</td>				
+					<td>${ v.getT1H() }</td>				
+					<td>${ v.getREH() }</td>				
+					<td>${ v.getWSD() }</td>				
+					<td>${ v.getLGT() }</td>				
+					<td>${ v.getSKY() }</td>				
 				</tr>
 			</c:forEach>
 		</table>
