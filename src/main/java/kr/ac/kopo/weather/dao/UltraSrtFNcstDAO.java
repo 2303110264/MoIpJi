@@ -85,7 +85,7 @@ public class UltraSrtFNcstDAO {
 		}
 		return vo;
 	}
-	public UltraSrtFNcstVO transRNI(UltraSrtFNcstVO vo) {
+	public UltraSrtFNcstVO transRNI (UltraSrtFNcstVO vo) {
 		double RNI = Double.parseDouble(vo.getRN1());
 
 		if(RNI < 1.0f) vo.setRN1("1.0mm미만 ");		
@@ -183,7 +183,7 @@ public class UltraSrtFNcstDAO {
                 System.out.println("---------------");
             return u;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("udao.docToUltraSrtVO");
             return null;
         }
     }
@@ -255,16 +255,11 @@ public class UltraSrtFNcstDAO {
             		flist.get(cnt).setSKY(fcstValue);
             		break;
             	}
-            	System.out.println(flist.get(cnt).toString());
-            	System.out.println(cnt);
             	cnt++;
-            }
-            for(int i = 0; i<6; i++) {
-            	System.out.println(flist.get(i).toString());
             }
             return flist;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("udao.docToUltraSrtVOList");
             return null;
         }
 	}

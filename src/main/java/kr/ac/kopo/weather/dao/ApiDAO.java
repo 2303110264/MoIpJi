@@ -6,9 +6,11 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -19,8 +21,9 @@ import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
 
 public class ApiDAO{
 	private String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
-	StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
-    
+	private StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
+    private StringBuilder kakaoUrl = new StringBuilder("https://dapi.kakao.com/v2/local/geo/coord2address.json");
+    private String restKey = "2c3d392f0bce9320bed9a1cb573ea0dd";
 	/** 초단기예보-단기예보 최대 ~3일 */
 
 	// 초단기 실황 조회
@@ -221,5 +224,37 @@ public class ApiDAO{
         	return null;
         }
 	}
-
+	
+	public String XYToAdress(String x, String y) {
+		try{
+            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "="+URLEncoder.encode(y, "UTF-8")); /*Service Key*/
+            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); /*페이지번호*/
+			
+            URL url = new URL(kakaoUrl.toString());
+            
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("X-Requested-With", "curl");
+            conn.setRequestProperty("Authorization", "KakaoAK " + restKey);
+            
+            conn.setDoOutput(true);
+            
+            Charset charset = Charset.forName("UTF-8");
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), charset));
+            
+            StringBuffer response = new StringBuffer();
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+            	response.append(inputLine); 
+            } 
+            System.out.println("responseCode : "+conn.getResponseCode());
+            System.out.println(response.toString());
+            return response.toString();
+            
+		} catch (Exception e) {
+    		e.printStackTrace();
+			return "";
+		}
+		
+	}
 }
