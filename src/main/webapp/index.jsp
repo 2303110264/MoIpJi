@@ -10,18 +10,22 @@
 </head>
 <body>
 	<h2>
-		<a id="logo" style="text-decoration:none; color:black" href="./index.jsp">
+		<a id="logo" href="./index.jsp">
 		MoIpJi
 		</a>
 	</h2>
 
 	<jsp:include page = "location.jsp"></jsp:include>
+	<div id="clock">
 	<jsp:include page = "./header/clock.jsp"></jsp:include>
+	</div>
+	<!--
 	<jsp:include page = "header.jsp"></jsp:include>
+	-->
 	<a href="./forecast.jsp">
 		<button>예보</button>
 	</a>
-	<a href="./login.jsp">
+	<a href="./user/login.jsp">
 		<button>로그인</button>
 	</a>
 	<br>

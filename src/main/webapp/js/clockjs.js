@@ -1,5 +1,5 @@
 /**
- * 
+ * why?
  */
 
 const hourElement = document.querySelector('.hour')

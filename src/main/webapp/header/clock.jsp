@@ -1,13 +1,12 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/clock.css">
-    <title>Clock</title>
+    <link rel="stylesheet" href="./css/clock.css">
 </head>
-<body>
+<div id="clockdiv">
+	<br>
     <button class="toggle">Dark Mode</button>
-
+	
     <div class="clock-container">
         <div class="clock">
             <div class="needle hour"></div>
@@ -21,6 +20,5 @@
     </div>
 
 
-    <script src="../js/clockjs.js"></script>
-</body>
-</html>
+    <script src="./js/clockjs.js"></script>
+</div>
