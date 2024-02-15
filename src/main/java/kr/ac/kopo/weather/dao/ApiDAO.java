@@ -14,6 +14,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -225,11 +227,12 @@ public class ApiDAO{
 	public String XYToAddress(String x, String y) {
 		StringBuilder kakaoUrl = new StringBuilder("https://dapi.kakao.com/v2/local/geo/coord2address.json");
 		//String kakaoKey = "2c3d392f0bce9320bed9a1cb573ea0dd"; //REST Api key
-		String kakaoKey = "a096af0b7420171e2ec8e60100485ec6"; //adminKey
+		//String kakaoKey = "a096af0b7420171e2ec8e60100485ec6"; //adminKey
+		String kakaoKey = "685a69beedfcfad9a251b0bfba150444"; // REST api 2
 		
 		try{
-            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); 
-            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(y, "UTF-8")); 
+            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "=" + URLEncoder.encode(y, "UTF-8")); 
+            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); 
 			
             URL url = new URL(kakaoUrl.toString());
             
@@ -257,5 +260,29 @@ public class ApiDAO{
 			return "XYToAddress error";
 		}
 		
+	}
+	public String JSONToAddress(String response) {
+		try {
+			JSONObject jsonObject = new JSONObject(response);
+
+	        // "documents" 키의 값 가져오기 (JSONArray)
+	        JSONArray documentsArray = jsonObject.getJSONArray("documents");
+	        
+	        // "documents" 배열에서 첫 번째 요소 가져오기
+	        JSONObject firstDocument = documentsArray.getJSONObject(0);
+	        
+	        // "address" 객체 가져오기
+	        JSONObject addressObject = firstDocument.getJSONObject("address");
+	        
+	        // "region_1depth_name" 값 가져오기
+	        String region1DepthName = addressObject.getString("region_1depth_name");
+	        String region2DepthName = addressObject.getString("region_2depth_name");
+	        String region3DepthName = addressObject.getString("region_3depth_name");
+	        
+	        return region1DepthName+" "+region2DepthName+" "+region3DepthName;
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
 	}
 }

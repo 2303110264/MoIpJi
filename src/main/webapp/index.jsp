@@ -29,7 +29,7 @@
 		<button>로그인</button>
 	</a>
 	<br>
-	<div style="display:none;">
+	<div id="todoList" style="display:none;">
 	<hr>
 		해야할 것: 
 		<br>1. xml형태로 넘어온 값을 처리하기 

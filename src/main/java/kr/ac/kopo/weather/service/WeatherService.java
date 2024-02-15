@@ -37,6 +37,8 @@ public class WeatherService {
 		}
 	}
 	public String getLocation(String x, String y) {
-		return adao.XYToAddress(x, y);
+		String response = adao.XYToAddress(x, y);
+		String address = adao.JSONToAddress(response);
+		return address;
 	}
 }
