@@ -20,7 +20,7 @@ public class WeatherService {
 			vo = usdao.fix(usdao.docToUltraSrtVO(vo, doc));
 			return vo; 
 		}catch(Exception e) {
-			System.out.println("오류 1회 출력: 정상");
+			System.out.println("1회 출력: 정상");
 			return null;
 		}
 	}
@@ -37,6 +37,6 @@ public class WeatherService {
 		}
 	}
 	public String getLocation(String x, String y) {
-		return adao.XYToAdress(x, y);
+		return adao.XYToAddress(x, y);
 	}
 }

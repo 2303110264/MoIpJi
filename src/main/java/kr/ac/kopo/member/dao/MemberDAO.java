@@ -1,36 +1,4 @@
 package kr.ac.kopo.member.dao;
-/**
- * 
-
-create table moipji_userlist(
-    id varchar2(15) primary key
-    , pw varchar2(20) not null
-    , mail varchar2(40) unique
-    , nickname varchar2(21)
-    , birth date
-    , joindate date default sysdate
-    , gender varchar2(6)
-    , adm varchar2(1)
-);
-
-insert into moipji_userlist(id, pw, mail, nickname, birth, gender, adm)
-values('daquarter', '1234', '2303110264@office.kopo.ac.kr', '관리자','1996-07-23', 'Female', '1')
-;
-
-create SEQUENCE mij_user_no;
-
-create table ms_board(
-    no number(8) default mij_user_no.nextval primary key
-    , title varchar(200) not null
-    , writer varchar(15) not null
-    , FOREIGN key (writer) REFERENCES moipji_userlist(id)
-    , content varchar(2000)
-    , view_cnt number(8) default 0
-    , reg_date date default sysdate
-);
-
-
- */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +15,7 @@ public class MemberDAO {
 		List<String> l = new ArrayList<>();
 		sql = new StringBuilder();
 		sql.append("select * ");
-		sql.append(" from moipji_userlist ");
+		sql.append(" from mij_member ");
 		
 		try(
 				Connection conn = new ConnectionFactory().getConnection();
@@ -69,9 +37,9 @@ public class MemberDAO {
 		sql = new StringBuilder();
 		sql.append("select id, case when mail=null then '-' end mail, ");
 		sql.append(" case when nickname=null then '-' end nickname, gender, ");
-		sql.append(" case when birth=null then '-' end birth, to_char(joindate, 'yyyy-MM-dd') joindate, ");
-		sql.append(" case when adm='0' then '사용자' when adm='1' then '관리자' end adm ");
-		sql.append(" from moipji_userlist ");
+		sql.append(" case when birthday=null then '-' end birthday, to_char(join_date, 'yyyy-MM-dd') join_date, ");
+		sql.append(" case when m_type='0' then '사용자' when m_type='1' then '관리자' end m_type ");
+		sql.append(" from mij_member ");
 		
 		try(
 				Connection conn = new ConnectionFactory().getConnection();
@@ -81,12 +49,13 @@ public class MemberDAO {
 			while(rs.next()) {
 				//id, mail, pw, nickname, gender, birth, adm
 				MemberVO m = new MemberVO();
-				m.setId(rs.getString("id"));
-				m.setNickname(rs.getString("nickname"));
-				m.setGender(rs.getString("gender"));
-				m.setBirth(rs.getString("birth"));
-				m.setAdm(rs.getString("adm"));
-				m.setJoindate(rs.getString("joindate"));
+				m.setId(rs.getString(1)); //id
+				m.setMail(rs.getString(2));	
+				m.setNickname(rs.getString(3));
+				m.setGender(rs.getString(4));
+				m.setBirth(rs.getString(5));
+				m.setJoindate(rs.getString(6));
+				m.setAdm(rs.getString(7));
 				l.add(m);
 			}
 		}catch(Exception e) {
@@ -97,8 +66,8 @@ public class MemberDAO {
 	}
 	public MemberVO login(String mail, String pw) {
 		sql = new StringBuilder();
-		sql.append("select * ");
-		sql.append(" from moipji_userlist ");
+		sql.append("select id, mail, nickname, gender, birthday, join_date, m_type ");
+		sql.append(" from mij_member ");
 		sql.append(" where id = ? and pw = ? ");
 		MemberVO m = new MemberVO();
 
@@ -110,13 +79,13 @@ public class MemberDAO {
 			pstmt.setString(2, pw);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				m.setId(rs.getString("id"));
-				m.setMail(rs.getString("mail"));
-				m.setNickname(rs.getString("nickname"));
-				m.setGender(rs.getString("gender"));
-				m.setBirth(rs.getString("birth"));
-				m.setJoindate(rs.getString("joindate"));
-				m.setAdm(rs.getString("adm"));
+				m.setId(rs.getString(1));
+				m.setMail(rs.getString(2));
+				m.setNickname(rs.getString(3));
+				m.setGender(rs.getString(4));
+				m.setBirth(rs.getString(5));
+				m.setJoindate(rs.getString(6));
+				m.setAdm(rs.getString(7));
 			}
 			return m;
 		}catch(Exception e) {
@@ -125,7 +94,7 @@ public class MemberDAO {
 	}
 	public boolean join(MemberVO m) {
 		sql = new StringBuilder();
-		sql.append("insert into moipji_userlist(id, mail, pw, nickname, gender, birth, adm)");
+		sql.append("insert into mij_member(id, mail, pw, nickname, gender, birthday, m_type)");
 		sql.append(" values( ? , ? , ? , ?,  "); // id, mail, pw, nickname,
 		sql.append(" ? , ?, '0' ) "); // gender, birth
 		try(

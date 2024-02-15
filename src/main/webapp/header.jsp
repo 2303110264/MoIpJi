@@ -16,8 +16,6 @@
 	
 	// javascripit로 시계 구현 (후순위)
 	pageContext.setAttribute("today", today.replaceAll("\\r?\\n", "<br/>"));
-%>
-<%
 	WeatherService s = new WeatherService();	
 	String ss = s.getLocation(x, y);
 	

@@ -2,24 +2,15 @@ package kr.ac.kopo.member.vo;
 
 public class MemberVO {
 	
-	private String id;
-	private String mail;
-	private String pw;
-	private String nickname;
-	private String gender;
-	private String birth;
-	private String joindate;
-	private String adm;
+	private String id; // v20
+	private String mail; // v60
+	private String pw; //v100
+	private String nickname; //v24
+	private String gender; //number (1)
+	private String birth; // date
+	private String joinDate; // date
+	private String mType; // number(1)
 
-	public MemberVO(String id, String mail, String pw, String nickname, String gender, String birth) {
-		super();
-		this.id = id;
-		this.mail = mail;
-		this.pw = pw;
-		this.nickname = nickname;
-		this.gender = gender;
-		this.birth = birth;
-	}
 	public String getId() {
 		return id;
 	}
@@ -57,21 +48,21 @@ public class MemberVO {
 		this.birth = birth;
 	}
 	public String getJoindate() {
-		return joindate;
+		return joinDate;
 	}
 	public void setJoindate(String joindate) {
-		this.joindate = joindate;
+		this.joinDate = joindate;
 	}
 	public String getAdm() {
-		return adm;
+		return mType;
 	}
 	public void setAdm(String adm) {
-		this.adm = adm;
+		this.mType = adm;
 	}
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", mail=" + mail + ", pw=" + pw + ", nickname=" + nickname + ", gender=" + gender
-				+ ", birth=" + birth + ", joindate=" + joindate + ", adm=" + adm + "]";
+				+ ", birth=" + birth + ", joindate=" + joinDate + ", adm=" + mType + "]";
 	}
 	public MemberVO() {
 		super();
@@ -86,8 +77,8 @@ public class MemberVO {
 		this.nickname = nickname;
 		this.gender = gender;
 		this.birth = birth;
-		this.joindate = joindate;
-		this.adm = adm;
+		this.joinDate = joindate;
+		this.mType = adm;
 	}
 	
 	

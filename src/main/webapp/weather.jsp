@@ -10,19 +10,17 @@
 
 	WeatherService ws = new WeatherService();
 	UltraSrtFNcstVO u = ws.getUltraSrtNcst(nx, ny);
+	String loc = ws.getLocation(nx, ny);
 	
-	//String uPrint = u.print().replaceAll("\\r?\\n", "<br/>"); //개행문자 삽입
-	//pageContext.setAttribute("uPrint", uPrint);	
 	pageContext.setAttribute("u", u);
-	pageContext.setAttribute("nx", nx);
-	pageContext.setAttribute("ny", ny);
+	pageContext.setAttribute("loc", loc);
+	
 %>
-<script>
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a67c668a370d2a59b8fb993cbaf0456c&libraries=services">
 </script>
 <hr>
 <div>
-	지역 : ${ u.getX() }, ${ u.getY() }/${ nx } ${ ny }
+	지역 : ${ loc }
 	<br>날씨 : <img src="${ u.getPTY() }" width="50px"/>
 	<br>기온 : ${ u.getT1H() }
 	<br>습도 : ${ u.getREH() }

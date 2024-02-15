@@ -5,7 +5,7 @@
 	String submitted = (String)request.getParameter("submitted");
 	pageContext.setAttribute("submitted", submitted);
 %>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a67c668a370d2a59b8fb993cbaf0456c&libraries=services">
+<script>
 //위치 좌표값 받아오기
 var chk = "${submitted}"
 if(chk.length<3){

@@ -6,11 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	request.setCharacterEncoding("utf-8");
-	String nx = (String)request.getParameter("latX");
-	String ny = (String)request.getParameter("lonY");
+	String latX = (String)request.getParameter("latX");
+	String lonY = (String)request.getParameter("lonY");
 
 	WeatherService ws = new WeatherService();
-	List<UltraSrtFNcstVO> flist = ws.getUltraSrtFcst(nx, ny);
+	List<UltraSrtFNcstVO> flist = ws.getUltraSrtFcst(latX, lonY);
 	
 	pageContext.setAttribute("flist", flist);
 %>
@@ -18,10 +18,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Forecast</title>
 </head>
 <body>
-<!-- 페이지 이동 없이 jsp include부분만 바꿔도 될지도. -->
+<!-- 페이지 이동 없이 jsp include부분만 바꿔도 될지도.
+모른다고 생각했던 적이 있었다. javascript로 jsp를 손대지 못한다는 걸 늦게 알았다. -->
 	<jsp:include page = "location.jsp"></jsp:include>
 	<jsp:include page = "./header.jsp"></jsp:include>
 	<a href="./index.jsp">

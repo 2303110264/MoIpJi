@@ -22,9 +22,7 @@ import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
 public class ApiDAO{
 	private String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
 	private StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
-    private StringBuilder kakaoUrl = new StringBuilder("https://dapi.kakao.com/v2/local/geo/coord2address.json");
-    private String restKey = "2c3d392f0bce9320bed9a1cb573ea0dd";
-	/** 초단기예보-단기예보 최대 ~3일 */
+    /** 초단기예보-단기예보 최대 ~3일 */
 
 	// 초단기 실황 조회
 	public String ultraSrtNcst(String nx, String ny){
@@ -224,20 +222,23 @@ public class ApiDAO{
         	return null;
         }
 	}
-	
-	public String XYToAdress(String x, String y) {
+	public String XYToAddress(String x, String y) {
+		StringBuilder kakaoUrl = new StringBuilder("https://dapi.kakao.com/v2/local/geo/coord2address.json");
+		//String kakaoKey = "2c3d392f0bce9320bed9a1cb573ea0dd"; //REST Api key
+		String kakaoKey = "a096af0b7420171e2ec8e60100485ec6"; //adminKey
+		
 		try{
-            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "="+URLEncoder.encode(y, "UTF-8")); /*Service Key*/
-            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); /*페이지번호*/
+            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); 
+            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(y, "UTF-8")); 
 			
             URL url = new URL(kakaoUrl.toString());
             
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+            //conn.setRequestMethod("GET");
             conn.setRequestProperty("X-Requested-With", "curl");
-            conn.setRequestProperty("Authorization", "KakaoAK " + restKey);
-            
-            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "KakaoAK " + kakaoKey);
+            //conn.setRequestProperty("content-type", "application/json");
+            //conn.setDoOutput(true);
             
             Charset charset = Charset.forName("UTF-8");
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), charset));
@@ -253,7 +254,7 @@ public class ApiDAO{
             
 		} catch (Exception e) {
     		e.printStackTrace();
-			return "";
+			return "XYToAddress error";
 		}
 		
 	}
