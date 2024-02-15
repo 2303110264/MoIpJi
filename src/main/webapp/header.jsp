@@ -23,11 +23,7 @@
 	
 	pageContext.setAttribute("ss", ss);
 %>
-<h2>
-	<a style="text-decoration:none; color:black" href="./index.jsp">
-	MoIpJi
-	</a>
-</h2>
 <h3>${ today }</h3>
 <h4>${ x }</h4>
 <h4>${ ss }</h4>
+

@@ -6,17 +6,25 @@
 <head>
 <meta charset="UTF-8">
 <title>MoIpJi-오늘 뭐 입지?</title>
+<link rel="stylesheet" href="./css/imshi.css" />
 </head>
-<script type="text/javascript">
-
-</script>
 <body>
+	<h2>
+		<a id="logo" style="text-decoration:none; color:black" href="./index.jsp">
+		MoIpJi
+		</a>
+	</h2>
+
 	<jsp:include page = "location.jsp"></jsp:include>
+	<jsp:include page = "./header/clock.jsp"></jsp:include>
 	<jsp:include page = "header.jsp"></jsp:include>
 	<a href="./forecast.jsp">
-		<button onclick="NcstToFcst()">예보</button>
+		<button>예보</button>
 	</a>
-	
+	<a href="./login.jsp">
+		<button>로그인</button>
+	</a>
+	<br>
 	<div style="display:none;">
 	<hr>
 		해야할 것: 

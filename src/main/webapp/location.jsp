@@ -8,19 +8,22 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a67c668a370d2a59b8fb993cbaf0456c&libraries=services">
 //위치 좌표값 받아오기
 var chk = "${submitted}"
-if(chk.length<2){
+if(chk.length<3){
 	
 	navigator.geolocation.getCurrentPosition(function(pos) {
 	var latitude = pos.coords.latitude;
     var longitude = pos.coords.longitude;
-    
+    if(latitude.length<2&&longitude.length<2){
+    	latitude = "126.9779692"
+    	longitude = "37.566535"
+    }
 	const form = document.createElement('form'); 
 	form.setAttribute('method', 'post'); 
 
 	const submitted = document.createElement('input'); 
 	submitted.setAttribute('type', 'hidden'); 
 	submitted.setAttribute('name', 'submitted'); 
-	submitted.setAttribute('value', 'OK');
+	submitted.setAttribute('value', 'Check');
 	
 	const latX = document.createElement('input'); 
 	latX.setAttribute('type', 'hidden'); 
