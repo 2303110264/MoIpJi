@@ -21,11 +21,14 @@ import org.xml.sax.InputSource;
 
 import kr.ac.kopo.weather.vo.UltraSrtFNcstVO;
 
-public class ApiDAO{
-	private String key = "pK84UlXP6sWp3IemLK8XFeQWgiCqhf+8q8Fq8swWpmNDa91O0TQdVZIEAAzYP3X0k3/fEDVP+pkV1YyVqzGFrA==";
+public class ApiDAOForShare{
+	private String key = ""; //공공데이터 (구 동네예보) api 사용 신청 필요
 	private StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"); /*URL*/
-    /** 초단기예보-단기예보 최대 ~3일 */
-
+	/**
+		위경도를 받아와서 그리드값으로 변환하는 과정이 생략되어 있습니다.
+		그리드값이 nx, ny (또는 x, y)부분에 대입되도록 코드(또는 메서드)를 추가해주시면 됩니다.
+	 */
+	
 	// 초단기 실황 조회
 	public String ultraSrtNcst(String nx, String ny){
         try {
@@ -46,7 +49,7 @@ public class ApiDAO{
 	        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); /*예보지점의 Y 좌표값*/
 	        URL url = new URL(urlBuilder.toString());
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	        System.out.println(url);
+	        //System.out.println(url);
 	        conn.setRequestMethod("GET");
 	        conn.setRequestProperty("Content-type", "application/json");
 	        
@@ -175,116 +178,4 @@ public class ApiDAO{
 		return null;
 	}
 	
-	//위도/경도값 grid로 바꾸기
-	public UltraSrtFNcstVO changeGPSToGrid(String x, String y)
-	{
-		try {
-		double lat_X = Double.parseDouble(x);
-		double lng_Y = Double.parseDouble(y);
-	    double RE = 6371.00877; // 지구 반경(km)
-	    double GRID = 5.0; // 격자 간격(km)
-	    double SLAT1 = 30.0; // 투영 위도1(degree)
-	    double SLAT2 = 60.0; // 투영 위도2(degree)
-	    double OLON = 126.0; // 기준점 경도(degree)
-	    double OLAT = 38.0; // 기준점 위도(degree)
-	    double XO = 43; // 기준점 X좌표(GRID)
-	    double YO = 136; // 기1준점 Y좌표(GRID)
-
-	    double DEGRAD = Math.PI / 180.0;
-
-	    double re = RE / GRID;
-	    double slat1 = SLAT1 * DEGRAD;
-	    double slat2 = SLAT2 * DEGRAD;
-	    double olon = OLON * DEGRAD;
-	    double olat = OLAT * DEGRAD;
-
-	    double sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
-	    sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
-	    double sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
-	    sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
-	    double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
-	    ro = re * sf / Math.pow(ro, sn);
-
-        
-	    //위도/경도 > 그리드
-        double ra = Math.tan(Math.PI * 0.25 + (lat_X) * DEGRAD * 0.5);
-        ra = re * sf / Math.pow(ra, sn);
-        double theta = lng_Y * DEGRAD - olon;
-        if (theta > Math.PI) theta -= 2.0 * Math.PI;
-        if (theta < -Math.PI) theta += 2.0 * Math.PI;
-        theta *= sn;
-        
-        UltraSrtFNcstVO rs = new UltraSrtFNcstVO();
-        rs.setX((int)Math.floor(ra * Math.sin(theta) + XO + 0.5)+"");
-        rs.setY((int)Math.floor(ro - ra * Math.cos(theta) + YO + 0.5)+"");
-
-        return rs;
-        }catch(Exception e) {
-        	e.printStackTrace();
-        	return null;
-        }
-	}
-	
-	//
-	public String XYToAddress(String x, String y) {
-		StringBuilder kakaoUrl = new StringBuilder("https://dapi.kakao.com/v2/local/geo/coord2address.json");
-		String kakaoKey = "f6c6a378ac29dd69ca7c5f830601e097"; // kakao REST api Key(it's work!) or admin key(i don't know)
-		
-		try{
-            kakaoUrl.append("?" + URLEncoder.encode("x","UTF-8") + "=" + URLEncoder.encode(y, "UTF-8")); 
-            kakaoUrl.append("&" + URLEncoder.encode("y","UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); 
-			
-            URL url = new URL(kakaoUrl.toString());
-            
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            //conn.setRequestMethod("GET");
-            conn.setRequestProperty("X-Requested-With", "curl");
-            conn.setRequestProperty("Authorization", "KakaoAK " + kakaoKey);
-            //conn.setRequestProperty("content-type", "application/json");
-            //conn.setDoOutput(true);
-            
-            Charset charset = Charset.forName("UTF-8");
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), charset));
-            
-            StringBuffer response = new StringBuffer();
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-            	response.append(inputLine); 
-            } 
-            System.out.println("responseCode : "+conn.getResponseCode());
-            System.out.println(response.toString());
-            return response.toString();
-            
-		} catch (Exception e) {
-    		e.printStackTrace();
-			return "XYToAddress error";
-		}
-		
-	}
-	
-	// coord2address json parsing (주소로 변환)
-	public String JSONToAddress(String response) {
-		try { 
-			JSONObject jsonObject = new JSONObject(response);
-
-	        // "documents" 키의 값 가져오기 (JSONArray)
-	        JSONArray documentsArray = jsonObject.getJSONArray("documents");
-	        
-	        // "documents" 배열에서 첫 번째 요소 가져오기
-	        JSONObject firstDocument = documentsArray.getJSONObject(0);
-	        
-	        // "address" 객체 가져오기
-	        JSONObject addressObject = firstDocument.getJSONObject("address");
-	        
-	        // 원래 index 방식으로 불러오는 게 낫다고 함
-	        String region1DepthName = addressObject.getString("region_1depth_name");
-	        String region2DepthName = addressObject.getString("region_2depth_name");
-	        String region3DepthName = addressObject.getString("region_3depth_name");
-	        
-	        return region1DepthName+" "+region2DepthName+" "+region3DepthName;
-		}catch(Exception e){
-			e.printStackTrace();
-			return "";
-		}
-	}
 }

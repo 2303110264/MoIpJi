@@ -10,6 +10,7 @@ public class MemberVO {
 	private String birth; // date
 	private String joinDate; // date
 	private String mType; // number(1)
+	private String salt;
 
 	public String getId() {
 		return id;
@@ -47,29 +48,35 @@ public class MemberVO {
 	public void setBirth(String birth) {
 		this.birth = birth;
 	}
-	public String getJoindate() {
+	public String getJoinDate() {
 		return joinDate;
 	}
-	public void setJoindate(String joindate) {
-		this.joinDate = joindate;
+	public void setJoinDate(String joinDate) {
+		this.joinDate = joinDate;
 	}
-	public String getAdm() {
+	public String getMType() {
 		return mType;
 	}
-	public void setAdm(String adm) {
-		this.mType = adm;
+	public void setMType(String mType) {
+		this.mType = mType;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", mail=" + mail + ", pw=" + pw + ", nickname=" + nickname + ", gender=" + gender
-				+ ", birth=" + birth + ", joindate=" + joinDate + ", adm=" + mType + "]";
+				+ ", birth=" + birth + ", joinDate=" + joinDate + ", mType=" + mType + ", salt=" + salt + "]";
 	}
 	public MemberVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MemberVO(String id, String mail, String pw, String nickname, String gender, String birth, String joindate,
-			String adm) {
+
+	public MemberVO(String id, String mail, String pw, String nickname, String gender, String birth, String salt) {
 		super();
 		this.id = id;
 		this.mail = mail;
@@ -77,8 +84,8 @@ public class MemberVO {
 		this.nickname = nickname;
 		this.gender = gender;
 		this.birth = birth;
-		this.joinDate = joindate;
-		this.mType = adm;
+		this.mType = "0";
+		this.salt = salt;
 	}
 	
 	

@@ -20,8 +20,8 @@
 </script>
 <hr>
 <div>
-	지역 : ${ loc }
-	<br>날씨 : <img src="${ u.getPTY() }" width="50px"/>
+	${ loc }
+	<br><img src="${ u.getPTY() }" width="50px"/>
 	<br>기온 : ${ u.getT1H() }
 	<br>습도 : ${ u.getREH() }
 	<br>풍속 : ${ u.getWSD() }

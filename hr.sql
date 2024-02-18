@@ -1,12 +1,13 @@
 CREATE TABLE MIJ_member(
   m_id VARCHAR2(20) PRIMARY KEY
-  , password VARCHAR2(100) NOT NULL
+  , password VARCHAR2(300) NOT NULL
   , mail VARCHAR2(60) UNIQUE NOT NULL
   , nickname VARCHAR2(24)
   , gender NUMBER(1)
   , birthday date
   , join_date date DEFAULT sysdate
   , m_type NUMBER(1) NOT NULL
+  , salt VARCHAR2(16) NOT NULL
 );
 -- type = 관리자/회원 분류"			
 			
