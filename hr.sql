@@ -3,13 +3,13 @@ CREATE TABLE MIJ_member(
   , password VARCHAR2(300) NOT NULL
   , mail VARCHAR2(60) UNIQUE NOT NULL
   , nickname VARCHAR2(24)
-  , gender NUMBER(1)
+  , gender VARCHAR2(12)
   , birthday date
   , join_date date DEFAULT sysdate
   , m_type NUMBER(1) NOT NULL
-  , salt VARCHAR2(16) NOT NULL
+  , salt VARCHAR2(40) NOT NULL
 );
--- type = ê´€ë¦¬ì/íšŒì› ë¶„ë¥˜"			
+-- type = °ü¸®ÀÚ/È¸¿ø ºĞ·ù"			
 			
 			
 CREATE TABLE MIJ_closet(
@@ -32,8 +32,8 @@ CREATE TABLE MIJ_weather(
   , WSD NUMBER
   , CONSTRAINT MIJ_weather_pk PRIMARY KEY(day, time)
 );
--- f_ncst=ì‹¤í™©/ì˜ˆë³´ êµ¬ë¶„
--- PTY=ê°•ìˆ˜í˜•íƒœ/SKY=í•˜ëŠ˜/T1H=ê¸°ì˜¨/REH=ìŠµë„/WSD=í’ì†
+-- f_ncst=½ÇÈ²/¿¹º¸ ±¸ºĞ
+-- PTY=°­¼öÇüÅÂ/SKY=ÇÏ´Ã/T1H=±â¿Â/REH=½Àµµ/WSD=Ç³¼Ó
 
 CREATE SEQUENCE mij_log_no;
 CREATE TABLE MIJ_user_log(
@@ -47,8 +47,12 @@ CREATE TABLE MIJ_user_log(
   , feet VARCHAR2(30)
   , etc VARCHAR2(30)
   , CONSTRAINT m_id FOREIGN KEY(m_id) REFERENCES MIJ_member(id)
+  ON DELETE CASCADE
 );
 
---drop table MIJ_closet;
---drop table mij_member;
---drop table mij_user_log;
+drop table MIJ_closet;
+drop table mij_member;
+drop table mij_user_log;
+
+select * from mij_member;
+insert into mij_member values('daquarter', 'ed5f6af4af8632731e3f5805155363e8b24733027ba3955381e17686815167e4', '2303110264@office.kopo.ac.kr', 'DQ', 'Undefined', '1996-07-23', sysdate, '1', '8b28beced1891a443e971a40249dfaf7');
