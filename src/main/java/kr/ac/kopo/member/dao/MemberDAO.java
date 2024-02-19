@@ -12,6 +12,8 @@ import kr.ac.kopo.util.ConnectionFactory;
 
 public class MemberDAO {
 	private StringBuilder sql;
+	
+	
 	//Simple
 	//byte[] byteArray = string.getBytes();
 	//String string = new String(byteArray);
@@ -23,15 +25,16 @@ public class MemberDAO {
 		}
 		return sb.toString();
 	}
+	
 	public String createSalt() {
 		SecureRandom rnd = new SecureRandom();
 		byte[] temp = new byte[16];
 		rnd.nextBytes(temp);
+		System.out.println("createSalt(): "+byteToString(temp));
 		return byteToString(temp);
 	}
 	
 	public String Hashing(byte[] password, String Salt) {
-		
 		// SHA-256 해시함수를 사용 
 		MessageDigest md;
 		try {
@@ -44,18 +47,15 @@ public class MemberDAO {
 			
 			return byteToString(password);
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("MemberVO.Hashing(byte[], String) Error");
 			return null;
 		}
- 
-		// key-stretching
 	}
 	
 	public List<String> allId(){
 		List<String> l = new ArrayList<>();
 		sql = new StringBuilder();
-		sql.append("select * ");
+		sql.append("select id ");
 		sql.append(" from mij_member ");
 		
 		try(
@@ -64,8 +64,7 @@ public class MemberDAO {
 				){
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				l.add(rs.getString("id"));
-				
+				l.add(rs.getString(1));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -105,11 +104,34 @@ public class MemberDAO {
 		
 		return l;
 	}
-	public boolean loginTry(String id, String pw) {
-		
-		return false;
+	public boolean passwordCheck(String id, String pw) {
+		sql = new StringBuilder();
+		sql.append("select id, password, salt from mij_member ");
+		sql.append(" where id = ? ");
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			){
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			
+			String salt = "a";
+			String hPw = "";
+			if(rs.next()) {
+				salt = rs.getString(3);
+				hPw = rs.getString(2);
+			}
+			System.out.println("Hashing");
+			System.out.println(Hashing(pw.getBytes(), salt));
+			System.out.println("Salt");
+			System.out.println(salt);
+			return Hashing(pw.getBytes(), salt).equals(hPw);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
-	public MemberVO loginSuccess(String mail, String pw) {
+	public MemberVO login(String id) {
 		sql = new StringBuilder();
 		sql.append("select id, mail, nickname, gender, birthday, join_date, m_type, salt ");
 		sql.append(" from mij_member ");
@@ -120,8 +142,7 @@ public class MemberDAO {
 				Connection conn = new ConnectionFactory().getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 				){
-			pstmt.setString(1, mail);
-			pstmt.setString(2, pw);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
 				m.setId(rs.getString(1));
@@ -140,14 +161,13 @@ public class MemberDAO {
 	}
 	public boolean join(MemberVO m) {
 		sql = new StringBuilder();
-		sql.append("insert into mij_member(id, mail, pw, nickname, gender, birthday, m_type, salt)");
-		sql.append(" values( ? , ? , ? , ?,  "); // id, mail, pw, nickname,
-		sql.append(" ? , ?, '0', ? ) "); // gender, birth
+		sql.append("insert into mij_member(id, mail, password, nickname, gender, birthday, m_type, salt)");
+		// id, mail, password, nickname, gender, birthday, m_type, salt
+		sql.append(" values( ? , ? , ? , ?, ? , ?, '0', ? )  "); 
 		try(
 				Connection conn = new ConnectionFactory().getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 				){
-			String salt = createSalt();
 			pstmt.setString(1, m.getId());
 			pstmt.setString(2, m.getMail());
 			pstmt.setString(3, m.getPw());
@@ -156,7 +176,7 @@ public class MemberDAO {
 			pstmt.setString(5, m.getGender());
 			if(m.getNickname()!=null) pstmt.setString(6, m.getBirth());
 			else pstmt.setNull(6, java.sql.Types.VARCHAR);
-			pstmt.setString(7, salt);
+			pstmt.setString(7, m.getSalt());
 
 			pstmt.executeUpdate();
 			return true;

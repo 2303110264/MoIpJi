@@ -1,5 +1,5 @@
 CREATE TABLE MIJ_member(
-  m_id VARCHAR2(20) PRIMARY KEY
+  id VARCHAR2(20) PRIMARY KEY
   , password VARCHAR2(300) NOT NULL
   , mail VARCHAR2(60) UNIQUE NOT NULL
   , nickname VARCHAR2(24)
@@ -18,7 +18,7 @@ CREATE TABLE MIJ_closet(
   , c_category NUMBER(1) NOT NULL
   , c_add_id VARCHAR2(20)
   , c_warm_point NUMBER(2) NOT NULL
-  , CONSTRAINT c_add_id FOREIGN KEY(c_add_id) REFERENCES MIJ_member(m_id)
+  , CONSTRAINT c_add_id FOREIGN KEY(c_add_id) REFERENCES MIJ_member(id)
 );
 			
 CREATE TABLE MIJ_weather(
@@ -30,14 +30,14 @@ CREATE TABLE MIJ_weather(
   , T1H NUMBER
   , REH NUMBER(2)
   , WSD NUMBER
-  , CONSTRAINT MIJ_w_PK(w_PK) PRIMARY KEY(day, time)
+  , CONSTRAINT MIJ_weather_pk PRIMARY KEY(day, time)
 );
 -- f_ncst=실황/예보 구분
 -- PTY=강수형태/SKY=하늘/T1H=기온/REH=습도/WSD=풍속
 
 CREATE SEQUENCE mij_log_no;
 CREATE TABLE MIJ_user_log(
-  log_no NUMBER DEFAULT MIJ_log_no_seq.nextval
+  log_no NUMBER DEFAULT MIJ_log_no.nextval
   , day DATE
   , m_id VARCHAR2(20) NOT NULL
   , top VARCHAR2(30)
@@ -46,5 +46,9 @@ CREATE TABLE MIJ_user_log(
   , coat VARCHAR2(30)
   , feet VARCHAR2(30)
   , etc VARCHAR2(30)
-  , CONSTRAINT m_id FOREIGN KEY(m_id) REFERENCES MIJ_member(m_id)
+  , CONSTRAINT m_id FOREIGN KEY(m_id) REFERENCES MIJ_member(id)
 );
+
+--drop table MIJ_closet;
+--drop table mij_member;
+--drop table mij_user_log;

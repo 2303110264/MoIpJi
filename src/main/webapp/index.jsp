@@ -1,6 +1,14 @@
+<%@page import="kr.ac.kopo.member.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%
+	MemberVO member = (MemberVO)session.getAttribute("member");
+	//로그인 X
+	if(member==null){
+		member = new MemberVO();
+		member.setMType("-1");
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +17,6 @@
 <link rel="stylesheet" href="./css/imshi.css" />
 </head>
 <body>
-	<h2>
-		<a id="logo" href="./index.jsp">
-		MoIpJi
-		</a>
-	</h2>
-
 	<jsp:include page = "location.jsp"></jsp:include>
 	<div id="clock">
 	<jsp:include page = "./header/clock.jsp"></jsp:include>

@@ -1,5 +1,28 @@
+<%@page import="java.net.URLDecoder"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.ac.kopo.member.service.MemberService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+//ID중복확인용
+	MemberService ms = new MemberService();
+	List<String> allId = ms.allId();
+	
+	pageContext.setAttribute("allId", allId);
+	
+	//쿠키
+	Cookie[] cks = request.getCookies();
+	String rememberMe = null;
+	if(cks != null){
+		for(Cookie c : cks){
+			if(c.getName().equals("S2")){
+				rememberMe = c.getValue();
+				rememberMe = URLDecoder.decode(rememberMe, "utf-8");
+				pageContext.setAttribute("rememberMe", rememberMe);
+			}
+		}
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +38,7 @@
 
 <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="loginProcess.jsp" method="post">
+            <form action="signUpProcess.jsp" method="post" id="signForm">
                 <h1>Create Account</h1><br>
                 <!-- 
                  <div class="social-container">
@@ -25,10 +48,11 @@
                 </div>
                 <span>or use your email for registration</span>
                  -->
-                <input type="text" name="id" placeholder="ID" />
+                <input type="text" id="id" name="id" placeholder="ID" />
+                <button id = "idCheckButton" type="button" onclick="chk('${allId}')">ID Check</button>
                 <input type="email" name="mail" placeholder="Email" />
-                <input type="password" name="password" placeholder="Password" />
-                <input type="password" name="checkPassword" placeholder="Check password" />
+                <input type="password" name="password" id="password" placeholder="Password" />
+                <input type="password" name="checkPassword" id="checkPassword" placeholder="Check password" />
 				<br><small>
 				option</small>
                 <input type="text" name="nickname" placeholder="Nickname" />
@@ -41,14 +65,14 @@
 	                </select>
                 </label>
                 <input type="date" placeholder="Birthday" id="birthday"
-                value="2024-02-16" min="1900-01-01" max="2024-02-16"/>
+                min="1900-01-01" max="2024-02-16"/>
                 <br>
                 <button type="submit">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="signUpProcess.jsp" method="post">
-                <h1>Sign in</h1>
+            <form action="loginProcess.jsp" method="post">
+                <h1>Login</h1>
                 <!-- 
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -57,10 +81,10 @@
                 </div>
                 <span>or use your account</span>
                  -->
-                <input type="text" placeholder="ID" />
-                <input type="password" placeholder="Password" />
+                <input type="text" name="id" placeholder="ID" value="${ rememberMe }"/>
+                <input type="password" name="password" placeholder="Password" />
                 <div id="rememberMe">
-               		<input type="checkbox" name="rememberMe" id="rememberMeBox">
+               		<input type="checkbox" name="rememberMe" value="S2" id="rememberMeBox">
                 	&nbsp;&nbsp;Remember me
                 </div>
                 <a href="#">Forgot your password?</a>

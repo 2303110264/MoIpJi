@@ -1,5 +1,8 @@
 @charset "UTF-8";
-
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+body{
+	max-width: 10vh;	
+}
 a {
 	text-decoration:none;
 	color: var(--primary-color);
@@ -15,4 +18,27 @@ button{
     border: 0;
     border-radius:4px;
     padding: 3px 12px 3px 12px;
+}
+
+/*
+button {
+    border-radius: 20px;
+    border: 1px solid #0169c7;
+    background: #0174DF;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+*/
+
+button:active {
+    transform: scale(.95);
+}
+
+button:focus {
+    outline: none;
 }

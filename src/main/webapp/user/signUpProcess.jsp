@@ -9,22 +9,22 @@
 	request.setCharacterEncoding("utf-8");
 	// 파라미터 추출(id, pw)
 	String id = (String)request.getParameter("id");
+	String pw = (String)request.getParameter("password");
 	String mail = (String)request.getParameter("mail");
-	String pw = (String)request.getParameter("pw");
 	String nick = (String)request.getParameter("nickname");
 	String gender = (String)request.getParameter("gender");
 	String birth = (String)request.getParameter("birthday");
 	
 	MemberService ms = new MemberService();
+	//String salt = ms.createSalt();
+	String salt = "8b28beced1891a443e971a40249dfaf7";
 	
-	String salt = ms.createSalt();
-	pw = ms.Hashing(pw, salt);
 	MemberVO m = new MemberVO(id, mail, pw, nick, gender, birth, salt);
 	
+	pw = ms.Hashing(pw, m.getSalt());
+	m.setPw(pw);
+	
 	boolean joinCheck = ms.join(m);
-	if(joinCheck){
-		session.setAttribute("member", m);
-	}
 	pageContext.setAttribute("joinCheck", joinCheck);
 	
 %>
