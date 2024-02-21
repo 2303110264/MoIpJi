@@ -133,7 +133,7 @@ public class MemberDAO {
 	}
 	public MemberVO login(String id) {
 		sql = new StringBuilder();
-		sql.append("select id, mail, nickname, gender, birthday, join_date, m_type, salt ");
+		sql.append("select id, mail, nickname, gender, birthday, join_date, m_type ");
 		sql.append(" from mij_member ");
 		sql.append(" where id = ? ");
 		MemberVO m = new MemberVO();
@@ -152,7 +152,6 @@ public class MemberDAO {
 				m.setBirth(rs.getString(5));
 				m.setJoinDate(rs.getString(6));
 				m.setMType(rs.getString(7));
-				m.setSalt(rs.getString(8));
 			}
 			return m;
 		}catch(Exception e) {

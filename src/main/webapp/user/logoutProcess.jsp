@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LightningHit: Logout</title>
+<title>Logout</title>
 </head>
 <body>
 </body>

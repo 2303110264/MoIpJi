@@ -19,41 +19,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Forecast</title>
+<link rel="stylesheet" href="./css/imshi.css" />
+<link rel="stylesheet" href="./css/clock.css" />
 </head>
 <body>
 <!-- 페이지 이동 없이 jsp include부분만 바꿔도 될지도.
 모른다고 생각했던 적이 있었다. javascript로 jsp를 손대지 못한다는 걸 늦게 알았다. -->
 	<jsp:include page = "location.jsp"></jsp:include>
 	<jsp:include page = "./header.jsp"></jsp:include>
-	<a href="./index.jsp">
-		<button>현재</button>
-	</a>
-	
-	<table border ="1" style="width:80%">
+		
+	<table border ="0" style="width:100%; padding-top:50px;">
 			<tr>
-				<th width="5%">x</th>
-				<th width="5%">y</th>
-				<th width="10%">baseDate</th>
-				<th width="10%">baseTime</th>
+				<th width="15%">Date</th>
+				<th>Time</th>
 				<th width="10%">PTY</th>
-				<th width="10%">RNI</th>
-				<th width="10%">TIH</th>
-				<th width="10%">REH</th>
-				<th width="10%">WSD</th>
-				<th width="10%">LGT</th>
-				<th width="10%">SKY</th>
+				<th width="25%">RNI</th>
+				<th>TIH</th>
+				<th>REH</th>
+				<th>WSD</th>
+				<th>LGT</th>
+				<th>SKY</th>
 			</tr>
 			<c:forEach items="${ flist }" var="v">
 				<tr>
-<!-- 
-					<td>
-						<a href="detail.jsp?no=${ b.getNo() }">
-							<c:out value="${ b.getTitle() }"/>
-						</a>
-					</td>
- -->						
-					<td>${ v.getX() }</td>
-					<td>${ v.getY() }</td>				
 					<td>${ v.getBaseDate() }</td>				
 					<td>${ v.getBaseTime() }</td>				
 					<td>${ v.getPTY() }</td>				

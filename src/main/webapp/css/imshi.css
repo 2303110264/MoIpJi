@@ -1,7 +1,9 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
 body{
-	max-width: 10vh;	
+	text-align:center;
+	max-width: 80%;	
+	margin: 0 auto;
 }
 a {
 	text-decoration:none;
@@ -41,4 +43,85 @@ button:active {
 
 button:focus {
     outline: none;
+}
+
+/* HEADER */
+.dropdownmenu{
+	position:absolute;
+	left: 50%;
+    transform: translate(-50%, 0%);
+	display:block;
+	font-size:30px;
+	width: max-content;
+}
+
+.dropdownmenu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 100%;
+}
+
+.dropdownmenu li {
+	margin: 0;
+	padding: 0;
+	overflow:visible; 
+	white-space:nowrap;
+	float: left;
+	position: relative;
+	width:auto;
+}
+
+.dropdownmenu a {
+	background: var(--secondary-color);
+	color: var(--primary-color);
+	display:block;
+	font: bold 12px/20px sans-serif;
+	padding: 10px 25px;
+	text-align: center;
+	font-size:15px;
+	-webkit-transition: all .25s ease;
+	-moz-transition: all .25s ease;
+	-ms-transition: all .25s ease;
+	-o-transition: all .25s ease;
+	transition: all .25s ease;
+}
+.dropdownmenu li:hover a {
+	background: var(--primary-color);
+	color: var(--secondary-color);
+}
+#submenu {
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 35px;
+	visibility: hidden;
+	z-index: 1;
+}
+li:hover ul#submenu {
+	opacity: 1;
+	top: 40px;	/* adjust this as per top nav padding top & bottom comes */
+	visibility: visible;
+}
+#submenu li {
+	float: none;
+	width: 100%;
+}
+#submenu a:hover {
+	background: #DF4B05;
+}
+#submenu a {
+	display:block;
+	background-color:#000000;
+}
+
+/* weather */
+.weatherdiv{
+	margin-top:50px;
+}
+
+/*cloth*/
+
+.clothtable{
+	margin: 0 auto;
 }

@@ -18,8 +18,8 @@
 %>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a67c668a370d2a59b8fb993cbaf0456c&libraries=services">
 </script>
+<div class="weatherdiv">
 <hr>
-<div>
 	${ loc }
 	<br><img src="${ u.getPTY() }" width="50px"/>
 	<br>기온 : ${ u.getT1H() }
