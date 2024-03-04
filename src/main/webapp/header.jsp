@@ -55,7 +55,6 @@
         <li><a href="#">CSS</a></li>
       </ul>
        -->
-    </li>
     <li><a href="#">Contact Me</a></li>
     <!-- 
      -->
