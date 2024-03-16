@@ -12,11 +12,11 @@ import kr.ac.kopo.util.ConnectionFactory;
 
 public class MemberDAO {
 	private StringBuilder sql;
-	
-	
 	//Simple
 	//byte[] byteArray = string.getBytes();
-	//String string = new String(byteArray);
+	//String string = new String(byteArray); // .toString() 넣어야할지도
+	// ? 외않되지.
+	
 	//디버깅용 로그 남길 때 사용 
 	private String byteToString(byte[] temp){ //byte to string
 		StringBuilder sb = new StringBuilder();

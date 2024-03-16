@@ -9,17 +9,25 @@ CREATE TABLE MIJ_member(
   , m_type NUMBER(1) NOT NULL
   , salt VARCHAR2(40) NOT NULL
 );
--- type = °ü¸®ÀÚ/È¸¿ø ºĞ·ù"			
+-- type = ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/È¸ï¿½ï¿½ ï¿½Ğ·ï¿½"			
 			
 			
 CREATE TABLE MIJ_closet(
-  c_num NUMBER(3) PRIMARY KEY
+  c_num NUMBER(6) PRIMARY KEY
   , c_name VARCHAR2(30) NOT NULL
-  , c_category NUMBER(1) NOT NULL
+  , c_category VARCHAR2(20) NOT NULL
   , c_add_id VARCHAR2(20)
   , c_warm_point NUMBER(2) NOT NULL
   , CONSTRAINT c_add_id FOREIGN KEY(c_add_id) REFERENCES MIJ_member(id)
 );
+-- top, bottom, hat, coat, feet, etc
+
+CREATE SEQUENCE c_num_seq
+START WITH 1 -- ì‹œì‘í•  ìˆ«ì
+INCREMENT BY 1 -- ì¦ê°€í•  í¬ê¸°
+MINVALUE 1 -- ìµœì†Œê°’
+MAXVALUE 999999 -- ìµœëŒ€ê°’
+CYCLE;
 			
 CREATE TABLE MIJ_weather(
   day DATE NOT NULL
@@ -32,8 +40,8 @@ CREATE TABLE MIJ_weather(
   , WSD NUMBER
   , CONSTRAINT MIJ_weather_pk PRIMARY KEY(day, time)
 );
--- f_ncst=½ÇÈ²/¿¹º¸ ±¸ºĞ
--- PTY=°­¼öÇüÅÂ/SKY=ÇÏ´Ã/T1H=±â¿Â/REH=½Àµµ/WSD=Ç³¼Ó
+-- f_ncst=ï¿½ï¿½È²/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+-- PTY=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/SKY=ï¿½Ï´ï¿½/T1H=ï¿½ï¿½ï¿½/REH=ï¿½ï¿½ï¿½ï¿½/WSD=Ç³ï¿½ï¿½
 
 CREATE SEQUENCE mij_log_no;
 CREATE TABLE MIJ_user_log(
@@ -50,9 +58,9 @@ CREATE TABLE MIJ_user_log(
   ON DELETE CASCADE
 );
 
-drop table MIJ_closet;
-drop table mij_member;
-drop table mij_user_log;
+--drop table MIJ_closet;
+--drop table mij_member;
+--drop table mij_user_log;
 
-select * from mij_member;
-delete mij_member where id='daquarter';
+--select * from mij_member;
+--delete mij_member where id='daquarter';
